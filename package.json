@@ -1,0 +1,12 @@
+{
+  "name": "vecode-site",
+  "private": true,
+  "type": "module",
+  "description": "Сайт студии разработки «Vecode». Статика для GitHub Pages; SEO-слой собирается из tools/seo.",
+  "scripts": {
+    "build": "node tools/build.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

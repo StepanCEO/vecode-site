@@ -1,5 +1,5 @@
 /* =========================================================
-   ФКОД — скрипты сайта
+   VECODE — скрипты сайта
    ========================================================= */
 
 /* Настройки формы.
@@ -8,6 +8,8 @@
    на адрес из блока контактов (#contact-email в index.html). */
 const CONFIG = {
   formEndpoint: '',
+  // TODO: рабочая почта студии — на неё уходит письмо, если formEndpoint не задан
+  email: 'hello@vecode.example',
 };
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -157,8 +159,8 @@ document.querySelectorAll('[data-accordion]').forEach((acc) => {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  const INK = '12, 12, 13';
-  const ACCENT = '#ff5a1f';
+  const INK = '13, 15, 14';
+  const ACCENT = '#1a8754';
 
   // основной маршрут проекта (координаты в долях от размера холста)
   const main = [
@@ -288,7 +290,7 @@ document.querySelectorAll('[data-accordion]').forEach((acc) => {
     ctx.stroke();
 
     if (travel < 1) {
-      ctx.fillStyle = 'rgba(255, 90, 31, 0.2)';
+      ctx.fillStyle = 'rgba(26, 135, 84, 0.18)';
       ctx.beginPath();
       ctx.arc(hx, hy, 13, 0, Math.PI * 2);
       ctx.fill();
@@ -322,14 +324,14 @@ document.querySelectorAll('[data-accordion]').forEach((acc) => {
       if (m.final && reached > 0 && travel >= 1) {
         // кольцо расходится от «релиза», когда импульс дошёл
         const ring = clamp((phase - TRAVEL) / (0.92 - TRAVEL), 0, 1);
-        ctx.strokeStyle = `rgba(255, 90, 31, ${(1 - ring) * 0.6 * fade})`;
+        ctx.strokeStyle = `rgba(26, 135, 84, ${(1 - ring) * 0.6 * fade})`;
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(n.px, n.py, r + ring * 34, 0, Math.PI * 2);
         ctx.stroke();
       }
 
-      ctx.fillStyle = '#f2f0eb';
+      ctx.fillStyle = '#f4f5f3';
       ctx.strokeStyle = `rgb(${INK})`;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
@@ -409,18 +411,13 @@ document.querySelectorAll('[data-accordion]').forEach((acc) => {
   });
 })();
 
-/* ---------- Форма заявки ---------- */
-(function initForm() {
-  const form = document.getElementById('brief');
-  if (!form) return;
-  const status = document.getElementById('brief-status');
+/* ---------- Формы: заявка (#brief) и приглашение в тендер (#tender-form) ----------
+   Обе отправляют JSON на CONFIG.formEndpoint (приём заявок CRM), а без него открывают письмо. */
+(function initLeadForms() {
+  const forms = document.querySelectorAll('form[data-lead-form]');
+  if (!forms.length) return;
   const emailLink = document.getElementById('contact-email');
-  const email = emailLink ? emailLink.getAttribute('href').replace(/^mailto:/, '') : '';
-
-  const setStatus = (text, isError) => {
-    status.textContent = text;
-    status.classList.toggle('is-error', Boolean(isError));
-  };
+  const email = CONFIG.email || (emailLink ? emailLink.getAttribute('href').replace(/^mailto:/, '') : '');
 
   const setFieldError = (input, message) => {
     const field = input.closest('.field');
@@ -443,71 +440,178 @@ document.querySelectorAll('[data-accordion]').forEach((acc) => {
     }
   };
 
-  form.addEventListener('input', (e) => {
-    if (e.target.matches('.field input') && e.target.value.trim()) setFieldError(e.target, '');
-  });
+  const REQUIRED = {
+    company: 'Укажите компанию',
+    name: 'Напишите, как к вам обращаться',
+    contact: 'Оставьте контакт, чтобы мы могли ответить',
+  };
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    setStatus('');
+  forms.forEach((form) => {
+    const kind = form.dataset.leadForm; // 'brief' | 'tender'
+    const status = form.querySelector('.form__status');
+    const setStatus = (text, isError) => {
+      status.textContent = text;
+      status.classList.toggle('is-error', Boolean(isError));
+    };
+    const val = (n) => (form.elements[n] ? form.elements[n].value.trim() : '');
 
-    const name = form.elements.name;
-    const contact = form.elements.contact;
-    let firstInvalid = null;
+    form.addEventListener('input', (e) => {
+      if (e.target.matches('.field input') && e.target.value.trim()) setFieldError(e.target, '');
+    });
+    form.addEventListener('change', (e) => {
+      if (e.target.name === 'consent' && e.target.checked) setFieldError(e.target, '');
+    });
 
-    [[name, 'Напишите, как к вам обращаться'], [contact, 'Оставьте контакт, чтобы мы могли ответить']].forEach(
-      ([input, message]) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      setStatus('');
+      let firstInvalid = null;
+
+      for (const [n, message] of Object.entries(REQUIRED)) {
+        const input = form.elements[n];
+        if (!input || !input.required) continue;
         const empty = !input.value.trim();
         setFieldError(input, empty ? message : '');
         if (empty && !firstInvalid) firstInvalid = input;
       }
-    );
-    if (firstInvalid) {
-      firstInvalid.focus();
-      return;
-    }
-
-    const data = {
-      name: name.value.trim(),
-      contact: contact.value.trim(),
-      types: [...form.querySelectorAll('input[name="type"]:checked')].map((i) => i.value),
-      about: form.elements.about.value.trim(),
-    };
-
-    // 1) если задан адрес сервера — отправляем заявку туда
-    if (CONFIG.formEndpoint) {
-      const button = form.querySelector('button[type="submit"]');
-      button.disabled = true;
-      setStatus('Отправляем…');
-      try {
-        const res = await fetch(CONFIG.formEndpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-        if (!res.ok) throw new Error(String(res.status));
-        form.reset();
-        setStatus('Спасибо! Заявка отправлена — ответим в течение рабочего дня.');
-      } catch (err) {
-        setStatus(`Не получилось отправить заявку. Напишите нам на ${email}.`, true);
-      } finally {
-        button.disabled = false;
+      // согласие на обработку персональных данных — отдельное и обязательное (152-ФЗ)
+      const consent = form.elements.consent;
+      if (consent) {
+        setFieldError(consent, consent.checked ? '' : 'Без согласия на обработку персональных данных мы не сможем принять заявку');
+        if (!consent.checked && !firstInvalid) firstInvalid = consent;
       }
-      return;
+      if (firstInvalid) {
+        firstInvalid.focus();
+        return;
+      }
+
+      const isTender = kind === 'tender';
+      const about = isTender
+        ? [
+            `Компания: ${val('company')}`,
+            val('link') ? `Закупка: ${val('link')}` : '',
+            val('deadline') ? `Срок подачи: ${val('deadline').split('-').reverse().join('.')}` : '',
+            val('about') ? `\n${val('about')}` : '',
+          ].filter(Boolean).join('\n')
+        : val('about');
+
+      const data = {
+        name: val('name'),
+        company: isTender ? val('company') : undefined,
+        contact: val('contact'),
+        types: isTender ? ['Тендер'] : [...form.querySelectorAll('input[name="type"]:checked')].map((i) => i.value),
+        about,
+        source: isTender ? 'Тендер' : undefined,
+        consent: Boolean(consent?.checked),
+        consent_at: new Date().toISOString(),
+      };
+      const done = isTender
+        ? 'Спасибо! Приглашение получено — ответим в течение рабочего дня.'
+        : 'Спасибо! Заявка отправлена — ответим в течение рабочего дня.';
+
+      // 1) если задан адрес приёма заявок — отправляем туда
+      if (CONFIG.formEndpoint) {
+        const button = form.querySelector('button[type="submit"]');
+        button.disabled = true;
+        setStatus('Отправляем…');
+        try {
+          const res = await fetch(CONFIG.formEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          if (!res.ok) throw new Error(String(res.status));
+          form.reset();
+          setStatus(done);
+        } catch (err) {
+          setStatus(`Не получилось отправить. Напишите нам на ${email}.`, true);
+        } finally {
+          button.disabled = false;
+        }
+        return;
+      }
+
+      // 2) иначе открываем почтовую программу с готовым письмом
+      const body = [
+        `Имя: ${data.name}`,
+        `Контакт: ${data.contact}`,
+        data.types.length && !isTender ? `Что нужно: ${data.types.join(', ')}` : '',
+        data.about ? `\n${isTender ? '' : 'О проекте:\n'}${data.about}` : '',
+      ]
+        .filter(Boolean)
+        .join('\n');
+      const subject = isTender ? 'Приглашение в тендер' : 'Заявка с сайта';
+      window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      setStatus(`Открыли письмо в вашей почтовой программе. Если оно не появилось — напишите на ${email}.`);
+    });
+  });
+})();
+
+/* ---------- Линия под шапкой при прокрутке ---------- */
+(function initHeader() {
+  const header = document.querySelector('.header');
+  if (!header) return;
+  const update = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+/* ---------- Уведомление о cookie ----------
+   Выбор хранится в localStorage (ключ vecode-cookie-consent): 'all' или 'necessary'.
+   Аналитику (например, Яндекс.Метрику) подключать только так:
+     window.vecodeConsent.onChange((choice) => { if (choice === 'all') loadMetrika(); });
+*/
+(function initCookies() {
+  const KEY = 'vecode-cookie-consent';
+  const VERSION = 1; // увеличьте, если поменяется состав cookie — уведомление покажется снова
+  const banner = document.getElementById('cookie-banner');
+  const listeners = [];
+
+  const read = () => {
+    try {
+      const v = JSON.parse(localStorage.getItem(KEY) || 'null');
+      return v && v.version === VERSION ? v.choice : null;
+    } catch {
+      return null;
     }
+  };
+  const save = (choice) => {
+    try {
+      localStorage.setItem(KEY, JSON.stringify({ choice, version: VERSION, at: new Date().toISOString() }));
+    } catch {
+      /* приватный режим: выбор действует до закрытия вкладки */
+    }
+    listeners.forEach((fn) => fn(choice));
+  };
 
-    // 2) иначе открываем почтовую программу с готовым письмом
-    const body = [
-      `Имя: ${data.name}`,
-      `Контакт: ${data.contact}`,
-      data.types.length ? `Что нужно: ${data.types.join(', ')}` : '',
-      data.about ? `\nО проекте:\n${data.about}` : '',
-    ]
-      .filter(Boolean)
-      .join('\n');
+  window.vecodeConsent = {
+    get: read,
+    onChange(fn) {
+      listeners.push(fn);
+      const current = read();
+      if (current) fn(current);
+    },
+  };
 
-    window.location.href =
-      `mailto:${email}?subject=${encodeURIComponent('Заявка с сайта')}&body=${encodeURIComponent(body)}`;
-    setStatus(`Открыли письмо в вашей почтовой программе. Если оно не появилось — напишите на ${email}.`);
+  if (!banner) return;
+  const show = () => {
+    banner.hidden = false;
+    requestAnimationFrame(() => banner.classList.add('is-in'));
+  };
+  const hide = () => {
+    banner.classList.remove('is-in');
+    setTimeout(() => (banner.hidden = true), reduceMotion ? 0 : 300);
+  };
+
+  if (!read()) setTimeout(show, 600);
+
+  banner.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-cookie]');
+    if (!btn) return;
+    save(btn.dataset.cookie === 'all' ? 'all' : 'necessary');
+    hide();
+  });
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-cookie-settings]')) show();
   });
 })();

@@ -1,0 +1,47 @@
+# robots.txt — stepanceo.github.io/vecode-site
+# Сгенерировано tools/build.mjs. Правьте источник, а не этот файл.
+
+User-agent: *
+Allow: /
+Disallow: /tools/
+Disallow: /package.json
+
+User-agent: Googlebot
+Allow: /
+Disallow: /tools/
+Disallow: /package.json
+
+User-agent: Bingbot
+Allow: /
+Disallow: /tools/
+Disallow: /package.json
+
+# Яндекс: склеиваем адреса с UTM и рекламными метками в один
+User-agent: Yandex
+Allow: /
+Disallow: /tools/
+Disallow: /package.json
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&yclid&gclid&fbclid&from
+
+# AI-краулеры: разрешены (ответы ChatGPT, Claude, Perplexity, Google AI и др.)
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+User-agent: Meta-ExternalAgent
+User-agent: Amazonbot
+User-agent: DuckAssistBot
+User-agent: MistralAI-User
+Allow: /
+Disallow: /tools/
+Disallow: /package.json
+
+Sitemap: https://stepanceo.github.io/vecode-site/sitemap.xml
