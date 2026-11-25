@@ -28,8 +28,8 @@
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="../assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
-  <link rel="preload" href="../assets/fonts/onest-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../css/style.css?v=41f3eb68">
+  <link rel="preload" href="../assets/fonts/manrope-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../css/style.css?v=71b4dda4">
   <script>(function(d){d.classList.add('js');try{if(!sessionStorage.getItem('vc-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('is-preloading');setTimeout(function(){d.classList.remove('is-preloading')},6000)}}catch(e){}})(document.documentElement);</script>
   <script type="application/ld+json">
 {
@@ -251,7 +251,6 @@
     </nav>
     <div class="header__actions">
       <a class="header__tender" href="../tender/">Пригласить в&nbsp;тендер</a>
-      <a class="header__cta" href="../#contact">Обсудить проект</a>
     </div>
     <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="menu">
       <span></span><span></span>
@@ -325,44 +324,46 @@
 
 <footer class="footer is-dark">
   <div class="container">
-    <div class="footer__top">
-      <div class="footer__brand">
-        <a class="logo" href="../" aria-label="Vecode — на главную">
-          <svg class="logo__mark" aria-hidden="true"><use href="#i-logo"/></svg>
-          <span class="logo__text">vecode</span>
-        </a>
-        <p>Студия разработки полного цикла. Сайты, чат-боты, CRM, AI-агенты, приложения и&nbsp;интеграции на&nbsp;заказ.</p>
-      </div>
-      <nav class="footer__col" aria-label="Услуги">
-        <p class="footer__label">Услуги</p>
-        <a href="../uslugi/razrabotka-sajtov/">Сайты</a>
-        <a href="../uslugi/chat-boty/">Чат-боты</a>
-        <a href="../uslugi/razrabotka-crm/">CRM</a>
-        <a href="../uslugi/avtomatizaciya-biznes-processov/">Автоматизация</a>
-        <a href="../uslugi/razrabotka-ai-agentov/">AI-агенты</a>
-        <a href="../uslugi/razrabotka-veb-prilozhenij/">Веб-приложения</a>
-        <a href="../uslugi/razrabotka-mobilnyh-prilozhenij/">Мобильные приложения</a>
-        <a href="../uslugi/integracii/">Интеграции</a>
+    <div class="footer__head">
+      <a class="logo" href="../" aria-label="Vecode — на главную">
+        <svg class="logo__mark" aria-hidden="true"><use href="#i-logo"/></svg>
+        <span class="logo__text">vecode</span>
+      </a>
+      <p class="footer__tagline">Студия разработки полного цикла</p>
+      <nav class="footer__links" aria-label="Быстрые ссылки">
+        <a href="../tender/">Пригласить в&nbsp;тендер <span aria-hidden="true">↗</span></a>
+        <a href="../#contact">Оставить заявку <span aria-hidden="true">↗</span></a>
+        
       </nav>
-      <nav class="footer__col" aria-label="Студия">
-        <p class="footer__label">Студия</p>
-        <a href="../uslugi/">Все услуги</a>
-        <a href="../#principles">Принципы</a>
-        <a href="../#work">Проекты</a>
-        <a href="../#process">Процесс</a>
-        <a href="../#faq">Вопросы</a>
+    </div>
+
+    <div class="footer__cols">
+      <nav class="footer__col" aria-label="Компания">
+        <p class="footer__label">Компания</p>
+        <a href="../#principles">О студии</a>
+        <a href="../#process">Как мы работаем</a>
+        <a href="../#faq">Вопросы и ответы</a>
+      </nav>
+      <nav class="footer__col" aria-label="Проекты">
+        <p class="footer__label">Проекты</p>
+        <a href="../#work">Портфолио</a>
+        <a href="../uslugi/">Услуги</a>
+        <a href="../#contact">Заполнить бриф</a>
+        <a href="../tender/">Пригласить в&nbsp;тендер</a>
       </nav>
       <div class="footer__col">
         <p class="footer__label">Связаться</p>
-        <a href="../#contact">Оставить заявку</a>
         <!-- TODO: рабочая почта (SITE.email в tools/seo/config.mjs) -->
         
+        
+        <a href="../#contact">Оставить заявку</a>
       </div>
     </div>
 
     <p class="footer__word" aria-hidden="true">vecode</p>
 
     <div class="footer__legal">
+      <p>© <span id="year">2026</span> Vecode</p>
       <nav class="footer__docs" aria-label="Документы">
         <a href="../privacy/">Политика конфиденциальности</a>
         <a href="../consent/">Согласие на обработку персональных данных</a>
@@ -370,13 +371,10 @@
         <a href="../terms/">Пользовательское соглашение</a>
         <button type="button" class="footer__cookie" data-cookie-settings>Настройки cookie</button>
       </nav>
-      <!-- TODO: реквизиты оператора (SITE.legal в tools/seo/config.mjs) -->
+      <a class="footer__up" href="#top">Наверх ↑</a>
     </div>
-
-    <div class="footer__bottom">
-      <p>© <span id="year">2026</span> Vecode · Обновлено: <time datetime="2026-11-18">18 ноября 2026</time></p>
-      <a href="#top">Наверх ↑</a>
-    </div>
+    <!-- TODO: реквизиты оператора (SITE.legal в tools/seo/config.mjs) -->
+    <p class="footer__updated">Обновлено: <time datetime="2026-11-18">18 ноября 2026</time></p>
   </div>
 </footer>
 

@@ -62,7 +62,7 @@ export function head({ title, description, path, rel = '', robots = 'index, foll
   <link rel="icon" href="${a}assets/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="${a}assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="${a}assets/apple-touch-icon.png">
-  <link rel="preload" href="${a}assets/fonts/onest-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="${a}assets/fonts/manrope-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="${a}css/style.css">
   <script>${PRELOAD_BOOT}</script>
   ${jsonld ? jsonLdScript(jsonld) : ''}
@@ -115,7 +115,6 @@ export function header(rel, { home = false } = {}) {
     </nav>
     <div class="header__actions">
       <a class="header__tender" href="${r}tender/">Пригласить в&nbsp;тендер</a>
-      <a class="header__cta" href="${r}#contact">Обсудить проект</a>
     </div>
     <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="menu">
       <span></span><span></span>
@@ -160,48 +159,54 @@ export function footer(rel, services, { home = false, updated = SITE.updated } =
   return `
 <footer class="footer is-dark">
   <div class="container">
-    <div class="footer__top">
-      <div class="footer__brand">
-        <a class="logo" href="${home ? '#top' : r || './'}" aria-label="${esc(SITE.name)} — ${home ? 'наверх' : 'на главную'}">
-          <svg class="logo__mark" aria-hidden="true"><use href="#i-logo"/></svg>
-          <span class="logo__text">${esc(SITE.wordmark)}</span>
-        </a>
-        <p>${typo(SITE.tagline)}. ${typo('Сайты, чат-боты, CRM, AI-агенты, приложения и интеграции на заказ.')}</p>
-      </div>
-      <nav class="footer__col" aria-label="Услуги">
-        <p class="footer__label">Услуги</p>
-        ${services.map((s) => `<a href="${r}uslugi/${s.slug}/">${esc(s.nav)}</a>`).join('\n        ')}
+    <div class="footer__head">
+      <a class="logo" href="${home ? '#top' : r || './'}" aria-label="${esc(SITE.name)} — ${home ? 'наверх' : 'на главную'}">
+        <svg class="logo__mark" aria-hidden="true"><use href="#i-logo"/></svg>
+        <span class="logo__text">${esc(SITE.wordmark)}</span>
+      </a>
+      <p class="footer__tagline">${typo(SITE.tagline)}</p>
+      <nav class="footer__links" aria-label="Быстрые ссылки">
+        <a href="${r}tender/">Пригласить в&nbsp;тендер <span aria-hidden="true">↗</span></a>
+        <a href="${r}#contact">Оставить заявку <span aria-hidden="true">↗</span></a>
+        ${SITE.telegram ? `<a href="${esc(SITE.telegram)}" rel="noopener">Telegram <span aria-hidden="true">↗</span></a>` : ''}
       </nav>
-      <nav class="footer__col" aria-label="Студия">
-        <p class="footer__label">Студия</p>
-        <a href="${r}uslugi/">Все услуги</a>
-        <a href="${r}#principles">Принципы</a>
-        <a href="${r}#work">Проекты</a>
-        <a href="${r}#process">Процесс</a>
-        <a href="${r}#faq">Вопросы</a>
+    </div>
+
+    <div class="footer__cols">
+      <nav class="footer__col" aria-label="Компания">
+        <p class="footer__label">Компания</p>
+        <a href="${r}#principles">О студии</a>
+        <a href="${r}#process">Как мы работаем</a>
+        <a href="${r}#faq">Вопросы и ответы</a>
+      </nav>
+      <nav class="footer__col" aria-label="Проекты">
+        <p class="footer__label">Проекты</p>
+        <a href="${r}#work">Портфолио</a>
+        <a href="${r}uslugi/">Услуги</a>
+        <a href="${r}#contact">Заполнить бриф</a>
+        <a href="${r}tender/">Пригласить в&nbsp;тендер</a>
       </nav>
       <div class="footer__col">
         <p class="footer__label">Связаться</p>
-        <a href="${r}#contact">Оставить заявку</a>
         ${SITE.email ? `<a href="mailto:${esc(SITE.email)}">${esc(SITE.email)}</a>` : '<!-- TODO: рабочая почта (SITE.email в tools/seo/config.mjs) -->'}
+        ${SITE.phone ? `<a href="tel:${esc(SITE.phone.replace(/[^+\d]/g, ''))}">${esc(SITE.phone)}</a>` : ''}
         ${SITE.telegram ? `<a href="${esc(SITE.telegram)}" rel="noopener">Telegram</a>` : ''}
+        <a href="${r}#contact">Оставить заявку</a>
       </div>
     </div>
 
     <p class="footer__word" aria-hidden="true">${esc(SITE.wordmark)}</p>
 
     <div class="footer__legal">
+      <p>© <span id="year">${updated.slice(0, 4)}</span> ${esc(SITE.name)}</p>
       <nav class="footer__docs" aria-label="Документы">
         ${LEGAL_PAGES.map((d) => `<a href="${r}${d.slug}/">${esc(d.nav)}</a>`).join('\n        ')}
         <button type="button" class="footer__cookie" data-cookie-settings>Настройки cookie</button>
       </nav>
-      ${SITE.legal.operator ? `<p class="footer__requisites">${esc(SITE.legal.operator)}${SITE.legal.inn ? `, ИНН ${esc(SITE.legal.inn)}` : ''}${SITE.legal.ogrn ? `, ОГРН ${esc(SITE.legal.ogrn)}` : ''}</p>` : '<!-- TODO: реквизиты оператора (SITE.legal в tools/seo/config.mjs) -->'}
+      <a class="footer__up" href="${top}">Наверх ↑</a>
     </div>
-
-    <div class="footer__bottom">
-      <p>© <span id="year">${updated.slice(0, 4)}</span> ${esc(SITE.name)} · Обновлено: <time datetime="${updated}">${ruDate(updated)}</time></p>
-      <a href="${top}">Наверх ↑</a>
-    </div>
+    ${SITE.legal.operator ? `<p class="footer__requisites">${esc(SITE.legal.operator)}${SITE.legal.inn ? `, ИНН ${esc(SITE.legal.inn)}` : ''}${SITE.legal.ogrn ? `, ОГРН ${esc(SITE.legal.ogrn)}` : ''}</p>` : '<!-- TODO: реквизиты оператора (SITE.legal в tools/seo/config.mjs) -->'}
+    <p class="footer__updated">Обновлено: <time datetime="${updated}">${ruDate(updated)}</time></p>
   </div>
 </footer>
 

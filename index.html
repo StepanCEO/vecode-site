@@ -29,8 +29,8 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="preload" href="assets/fonts/onest-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=41f3eb68">
+  <link rel="preload" href="assets/fonts/manrope-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css?v=71b4dda4">
   <script>(function(d){d.classList.add('js');try{if(!sessionStorage.getItem('vc-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('is-preloading');setTimeout(function(){d.classList.remove('is-preloading')},6000)}}catch(e){}})(document.documentElement);</script>
   <script type="application/ld+json">
 {
@@ -234,7 +234,6 @@
     </nav>
     <div class="header__actions">
       <a class="header__tender" href="tender/">Пригласить в&nbsp;тендер</a>
-      <a class="header__cta" href="#contact">Обсудить проект</a>
     </div>
     <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="menu">
       <span></span><span></span>
@@ -266,28 +265,27 @@
   <section class="hero hero--home">
     <div class="container hero__grid">
       <div class="hero__text">
-        <p class="badge" data-reveal>
-          <span class="badge__dot" aria-hidden="true"></span>
+        <p class="hero__badge" data-reveal>
+          <span class="hero__badge-mark" aria-hidden="true"><svg><use href="#i-logo"/></svg></span>
           Студия разработки полного цикла&nbsp;· принимаем заявки
         </p>
         <h1 class="hero__title" data-reveal>
-          Разработка сайтов, CRM, чат-ботов и&nbsp;<em>AI-агентов</em> под ключ.
+          Разработка сайтов, CRM, <span class="nobr">чат-ботов</span> и&nbsp;<span class="nobr">AI-агентов</span> под ключ.
         </h1>
         <p class="hero__lead" data-reveal>
-          Vecode&nbsp;— студия разработки полного цикла. Делаем на&nbsp;заказ сайты, чат-боты, CRM, автоматизации, AI-агентов, веб- и&nbsp;мобильные приложения и&nbsp;интеграции. Ведём проект от&nbsp;аналитики и&nbsp;дизайна до&nbsp;запуска и&nbsp;поддержки.
+          Vecode&nbsp;— студия разработки полного цикла: сайты, CRM, <span class="nobr">чат-боты</span>, <span class="nobr">AI-агенты</span>, веб- и&nbsp;мобильные приложения. От&nbsp;аналитики и&nbsp;дизайна до&nbsp;запуска и&nbsp;поддержки.
         </p>
         <div class="hero__actions" data-reveal>
-          <a class="btn btn--accent" href="#contact">Обсудить проект
+          <a class="btn btn--accent hero__cta" href="#contact">Обсудить проект
             <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg>
           </a>
-          <a class="btn btn--line" href="#services">Что мы делаем</a>
         </div>
       </div>
 
       <div class="hero__visual hero__visual--photo" data-reveal>
         <picture>
-          <source type="image/avif" srcset="assets/hero/hand-phone-589.avif 589w, assets/hero/hand-phone-1151.avif 1151w" sizes="(max-width: 900px) 86vw, 620px">
-          <source type="image/webp" srcset="assets/hero/hand-phone-589.webp 589w, assets/hero/hand-phone-1151.webp 1151w" sizes="(max-width: 900px) 86vw, 620px">
+          <source type="image/avif" srcset="assets/hero/hand-phone-589.avif 589w, assets/hero/hand-phone-1151.avif 1151w" sizes="(max-width: 900px) 86vw, 760px">
+          <source type="image/webp" srcset="assets/hero/hand-phone-589.webp 589w, assets/hero/hand-phone-1151.webp 1151w" sizes="(max-width: 900px) 86vw, 760px">
           <img src="assets/hero/hand-phone-589.jpg" width="1151" height="1367" fetchpriority="high" decoding="async"
             alt="Смартфон в руке: экран приложения Vecode «Делаем продукты, которые работают на вас» с графиком роста">
         </picture>
@@ -823,44 +821,46 @@
 <!-- build:footer -->
 <footer class="footer is-dark">
   <div class="container">
-    <div class="footer__top">
-      <div class="footer__brand">
-        <a class="logo" href="#top" aria-label="Vecode — наверх">
-          <svg class="logo__mark" aria-hidden="true"><use href="#i-logo"/></svg>
-          <span class="logo__text">vecode</span>
-        </a>
-        <p>Студия разработки полного цикла. Сайты, чат-боты, CRM, AI-агенты, приложения и&nbsp;интеграции на&nbsp;заказ.</p>
-      </div>
-      <nav class="footer__col" aria-label="Услуги">
-        <p class="footer__label">Услуги</p>
-        <a href="uslugi/razrabotka-sajtov/">Сайты</a>
-        <a href="uslugi/chat-boty/">Чат-боты</a>
-        <a href="uslugi/razrabotka-crm/">CRM</a>
-        <a href="uslugi/avtomatizaciya-biznes-processov/">Автоматизация</a>
-        <a href="uslugi/razrabotka-ai-agentov/">AI-агенты</a>
-        <a href="uslugi/razrabotka-veb-prilozhenij/">Веб-приложения</a>
-        <a href="uslugi/razrabotka-mobilnyh-prilozhenij/">Мобильные приложения</a>
-        <a href="uslugi/integracii/">Интеграции</a>
+    <div class="footer__head">
+      <a class="logo" href="#top" aria-label="Vecode — наверх">
+        <svg class="logo__mark" aria-hidden="true"><use href="#i-logo"/></svg>
+        <span class="logo__text">vecode</span>
+      </a>
+      <p class="footer__tagline">Студия разработки полного цикла</p>
+      <nav class="footer__links" aria-label="Быстрые ссылки">
+        <a href="tender/">Пригласить в&nbsp;тендер <span aria-hidden="true">↗</span></a>
+        <a href="#contact">Оставить заявку <span aria-hidden="true">↗</span></a>
+        
       </nav>
-      <nav class="footer__col" aria-label="Студия">
-        <p class="footer__label">Студия</p>
-        <a href="uslugi/">Все услуги</a>
-        <a href="#principles">Принципы</a>
-        <a href="#work">Проекты</a>
-        <a href="#process">Процесс</a>
-        <a href="#faq">Вопросы</a>
+    </div>
+
+    <div class="footer__cols">
+      <nav class="footer__col" aria-label="Компания">
+        <p class="footer__label">Компания</p>
+        <a href="#principles">О студии</a>
+        <a href="#process">Как мы работаем</a>
+        <a href="#faq">Вопросы и ответы</a>
+      </nav>
+      <nav class="footer__col" aria-label="Проекты">
+        <p class="footer__label">Проекты</p>
+        <a href="#work">Портфолио</a>
+        <a href="uslugi/">Услуги</a>
+        <a href="#contact">Заполнить бриф</a>
+        <a href="tender/">Пригласить в&nbsp;тендер</a>
       </nav>
       <div class="footer__col">
         <p class="footer__label">Связаться</p>
-        <a href="#contact">Оставить заявку</a>
         <!-- TODO: рабочая почта (SITE.email в tools/seo/config.mjs) -->
         
+        
+        <a href="#contact">Оставить заявку</a>
       </div>
     </div>
 
     <p class="footer__word" aria-hidden="true">vecode</p>
 
     <div class="footer__legal">
+      <p>© <span id="year">2026</span> Vecode</p>
       <nav class="footer__docs" aria-label="Документы">
         <a href="privacy/">Политика конфиденциальности</a>
         <a href="consent/">Согласие на обработку персональных данных</a>
@@ -868,13 +868,10 @@
         <a href="terms/">Пользовательское соглашение</a>
         <button type="button" class="footer__cookie" data-cookie-settings>Настройки cookie</button>
       </nav>
-      <!-- TODO: реквизиты оператора (SITE.legal в tools/seo/config.mjs) -->
+      <a class="footer__up" href="#top">Наверх ↑</a>
     </div>
-
-    <div class="footer__bottom">
-      <p>© <span id="year">2026</span> Vecode · Обновлено: <time datetime="2026-11-18">18 ноября 2026</time></p>
-      <a href="#top">Наверх ↑</a>
-    </div>
+    <!-- TODO: реквизиты оператора (SITE.legal в tools/seo/config.mjs) -->
+    <p class="footer__updated">Обновлено: <time datetime="2026-11-18">18 ноября 2026</time></p>
   </div>
 </footer>
 
