@@ -712,7 +712,7 @@ html.is-preloading .hero [data-reveal] { animation-play-state: paused; }
 /* фото: во всю высоту блока, прижато к правому краю экрана; низ (срез запястья) совпадает с краем блока.
    Фон снимка совпадает с фоном блока, поэтому текст лежит поверх него без рамки */
 .hero--home .hero__visual--photo {
-  position: absolute; z-index: 1; right: calc(-1 * clamp(0px, 4vw, 80px));
+  position: absolute; z-index: 1; right: 0;
   bottom: 0; height: 100%; width: auto; max-width: none; max-height: none; margin: 0; aspect-ratio: 1151 / 1367;
 }
 .hero--home .hero__visual--photo picture,
