@@ -2,7 +2,8 @@
 // Запуск: node tools/build.mjs   (без зависимостей, Node 18+)
 // Главная (index.html) редактируется руками; сборщик заменяет только блоки между маркерами <!-- build:имя -->.
 import { readFile, writeFile, mkdir, rm, readdir } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SITE, FACTS, abs } from './seo/config.mjs';
@@ -18,9 +19,17 @@ import { LEGAL_PAGES, missingLegal } from './seo/legal.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const out = (p) => join(ROOT, p);
+
+// Метка версии стилей и скрипта по их содержимому: после правки файла адрес меняется,
+// и браузер не берёт старую копию из кэша (GitHub Pages разрешает кэшировать 10 минут).
+const VERSION = Object.fromEntries(
+  ['css/style.css', 'js/main.js'].map((f) => [f, createHash('sha1').update(readFileSync(join(ROOT, f))).digest('hex').slice(0, 8)])
+);
+const bust = (html) => html.replace(/(css\/style\.css|js\/main\.js)(\?v=\w+)?(?=")/g, (m, f) => `${f}?v=${VERSION[f]}`);
+
 const write = async (p, content) => {
   await mkdir(dirname(out(p)), { recursive: true });
-  await writeFile(out(p), content);
+  await writeFile(out(p), p.endsWith('.html') ? bust(content) : content);
 };
 
 const pages = []; // для sitemap и проверок: { path, file, title, description, updated, faq }
@@ -146,7 +155,7 @@ for (const doc of LEGAL_PAGES) {
     if (!re.test(html)) throw new Error(`В index.html нет маркеров <!-- build:${name} --> … <!-- /build:${name} -->`);
     html = html.replace(re, `$1\n${content.trim()}\n$2`);
   }
-  await writeFile(out('index.html'), html);
+  await writeFile(out('index.html'), bust(html));
   pages.unshift({ path, file: 'index.html', title: HOME.title, description: HOME.description, updated: SITE.updated, faq: HOME_FAQ, priority: '1.0' });
 }
 
@@ -347,7 +356,7 @@ for (const p of [...pages, { path: null, file: '404.html', title: 'Страни�
   }
   // внутренние ссылки ведут на существующие файлы
   for (const m of html.matchAll(/href="([^"#:]+?)(#[^"]*)?"/g)) {
-    const href = m[1];
+    const href = m[1].split('?')[0]; // ?v=… — метка версии, к файлу отношения не имеет
     if (!href || href.startsWith('mailto') || href.startsWith('tel')) continue;
     const base = p.file === '404.html' ? '' : dirname(p.file);
     const target = href.startsWith('/') ? href.slice(BASE.length) : join(base, href);
