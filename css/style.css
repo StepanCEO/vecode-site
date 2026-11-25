@@ -64,7 +64,7 @@
   --radius: clamp(24px, 3vw, 40px);
   --pad: clamp(20px, 4vw, 56px);
   --section: clamp(88px, 11vw, 168px);
-  --header: 76px;
+  --header: 88px;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
@@ -173,12 +173,15 @@ canvas, svg { display: block; }
 .header__inner { display: flex; align-items: center; gap: 28px; height: var(--header); }
 
 .logo { display: inline-flex; align-items: center; gap: 9px; flex: none; }
-.logo__mark { width: 26px; height: 26px; }
-.logo__text { font-size: 24px; font-weight: 600; letter-spacing: -0.05em; line-height: 1; padding-bottom: 3px; }
+.logo__mark { width: 30px; height: 30px; }
+.logo__text { font-size: 28px; font-weight: 600; letter-spacing: -0.05em; line-height: 1; padding-bottom: 3px; }
 
-.nav { display: flex; gap: 2px; margin-left: 20px; }
-.nav a { padding: 10px 14px; border-radius: 999px; font-size: 15px; color: rgba(13, 15, 14, 0.66); transition: color 0.2s, background-color 0.2s; }
-.nav a:hover { color: var(--black); background: rgba(13, 15, 14, 0.05); }
+/* меню слева, сразу за логотипом: чёрные строчные пункты с широкими промежутками */
+.nav { display: flex; align-items: center; gap: clamp(22px, 2.8vw, 40px); margin-left: clamp(28px, 4.4vw, 72px); }
+.nav a { position: relative; padding: 8px 0; white-space: nowrap; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; text-transform: lowercase; color: var(--black); transition: color 0.2s; }
+.nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 0.3s var(--ease); }
+.nav a:hover { color: var(--accent-text); }
+.nav a:hover::after, .nav a:focus-visible::after { transform: scaleX(1); }
 
 .header__actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
 .header__tender,
@@ -545,7 +548,6 @@ canvas, svg { display: block; }
    Адаптив
    ========================================================= */
 @media (max-width: 1180px) {
-  .nav a { padding: 10px 10px; }
   .header__cta { display: none; }
 }
 
@@ -624,4 +626,49 @@ canvas, svg { display: block; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
   .js [data-reveal] { opacity: 1; transform: none; }
+}
+
+/* =========================================================
+   Экран загрузки (один раз за сессию, ~1,6 с)
+   ========================================================= */
+.preloader { display: none; }
+html.is-preloading, html.is-preload-leaving { overflow: hidden; }
+html.is-preloading .preloader,
+html.is-preload-leaving .preloader {
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: clamp(18px, 3vw, 32px) var(--pad) clamp(22px, 3.4vw, 40px);
+  background: var(--surface); color: var(--fg);
+}
+html.is-preload-leaving .preloader { transform: translateY(-100%); transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1); }
+html.is-preload-leaving .preloader__brand { transform: translateY(-40px); opacity: 0; transition: transform 0.6s var(--ease), opacity 0.4s ease; }
+
+/* пока экран загрузки на месте, анимация первого экрана ждёт */
+html.is-preloading .hero [data-reveal] { animation-play-state: paused; }
+
+.preloader__row { display: flex; justify-content: space-between; gap: 16px; font-size: 13px; font-weight: 500; letter-spacing: -0.01em; }
+.preloader__tags { color: var(--muted); }
+.preloader__row--bottom { align-items: flex-end; }
+
+/* слово «vecode» поднимается по буквам, затем «выстреливает» зелёная точка из логотипа */
+.preloader__brand { display: flex; align-items: flex-start; justify-content: center; font-size: clamp(64px, 13vw, 196px); }
+.preloader__word { display: inline-flex; overflow: hidden; font-weight: 500; letter-spacing: -0.06em; line-height: 1.05; padding: 0 0.04em 0.08em 0; }
+.preloader__word > span { display: inline-block; transform: translateY(110%); animation: pl-rise 0.75s var(--ease) forwards; animation-delay: calc(0.1s + var(--i) * 0.06s); }
+.preloader__dot { flex: none; width: 0.2em; height: 0.2em; margin: 0.2em 0 0 0.06em; border-radius: 50%; background: var(--green); transform: scale(0); animation: pl-dot 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.75s forwards, pl-ring 1.4s ease-out 1.4s infinite; }
+
+.preloader__status { display: inline-flex; align-items: center; gap: 10px; color: var(--muted); }
+.preloader__pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pl-blink 1s ease-in-out infinite; }
+.preloader__count { display: inline-flex; align-items: flex-end; gap: 4px; font-size: clamp(56px, 8vw, 112px); font-weight: 500; line-height: 0.82; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
+.preloader__count small { font-size: 0.18em; letter-spacing: 0; padding-bottom: 0.15em; }
+
+.preloader__bar { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: var(--surface-2); }
+.preloader__bar span { display: block; height: 100%; background: var(--green); transform-origin: left; transform: scaleX(0); }
+
+@keyframes pl-ring { 0% { box-shadow: 0 0 0 0 rgba(26, 135, 84, 0.35); } 100% { box-shadow: 0 0 0 0.22em rgba(26, 135, 84, 0); } }
+@keyframes pl-dot { 0% { transform: scale(0); } 60% { transform: scale(1.35); } 100% { transform: scale(1); } }
+@keyframes pl-rise { to { transform: none; } }
+@keyframes pl-blink { 50% { opacity: 0.25; } }
+
+@media (max-width: 640px) {
+  .preloader__tags { display: none; }
 }

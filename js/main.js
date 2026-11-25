@@ -15,6 +15,77 @@ const CONFIG = {
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
+/* ---------- Экран загрузки ---------- */
+// Показывается, только если его включил скрипт в <head> (один раз за сессию).
+// Счётчик идёт ~1,6 с, но до 100% доходит не раньше, чем страница реально загрузилась (максимум 3,5 с).
+(function initPreloader() {
+  const root = document.documentElement;
+  const el = document.querySelector('.preloader');
+  if (!el || !root.classList.contains('is-preloading')) {
+    el?.remove();
+    return;
+  }
+  const countEl = el.querySelector('[data-preload-count]');
+  const barEl = el.querySelector('[data-preload-bar]');
+  const statusEl = el.querySelector('[data-preload-status]');
+  const STATUSES = ['Собираем интерфейс', 'Подключаем API', 'Проверяем тесты', 'Деплой'];
+  const DURATION = 1600;
+  const MAX_WAIT = 3500;
+  // отсчёт — с первого нарисованного кадра: тогда же стартует CSS-анимация слова
+  let start = null;
+  let loaded = document.readyState === 'complete';
+  if (!loaded) window.addEventListener('load', () => (loaded = true), { once: true });
+
+  // плавный разгон и торможение: цифры идут в такт анимации слова
+  const ease = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+  const show = (p) => {
+    const v = Math.round(p * 100);
+    countEl.textContent = String(v).padStart(3, '0');
+    barEl.style.transform = `scaleX(${p})`;
+    statusEl.textContent = v >= 100 ? 'Готово' : STATUSES[Math.min(STATUSES.length - 1, Math.floor(p * STATUSES.length))];
+  };
+
+  const finish = () => {
+    try {
+      sessionStorage.setItem('vc-intro', '1');
+    } catch {
+      /* приватный режим — просто покажем ещё раз в следующий заход */
+    }
+    root.classList.add('is-preload-leaving');
+    root.classList.remove('is-preloading');
+    setTimeout(() => {
+      root.classList.remove('is-preload-leaving');
+      el.remove();
+    }, 900);
+  };
+
+  // кадр анимации, а если браузер их не даёт (вкладка в фоне) — обычный таймер
+  const next = (fn) => {
+    let fired = false;
+    const raf = requestAnimationFrame((t) => {
+      fired = true;
+      fn(t);
+    });
+    setTimeout(() => {
+      if (fired) return;
+      cancelAnimationFrame(raf);
+      fn(performance.now());
+    }, 100);
+  };
+
+  const tick = (now) => {
+    if (start === null) start = now;
+    const elapsed = now - start;
+    let p = ease(Math.min(1, elapsed / DURATION));
+    // страница ещё грузится — держим счётчик на 96% до события load
+    if (!loaded && elapsed < MAX_WAIT) p = Math.min(p, 0.96);
+    show(p);
+    if (p < 1) return next(tick);
+    setTimeout(finish, 220);
+  };
+  next(tick);
+})();
+
 /* ---------- Год в подвале ---------- */
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = String(new Date().getFullYear());

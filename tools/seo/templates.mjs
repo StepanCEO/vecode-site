@@ -64,17 +64,42 @@ export function head({ title, description, path, rel = '', robots = 'index, foll
   <link rel="apple-touch-icon" href="${a}assets/apple-touch-icon.png">
   <link rel="preload" href="${a}assets/fonts/onest-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="${a}css/style.css">
-  <script>document.documentElement.classList.add('js');</script>
+  <script>${PRELOAD_BOOT}</script>
   ${jsonld ? jsonLdScript(jsonld) : ''}
 `;
 }
+
+/* ---------------- экран загрузки ---------------- */
+// Показывается один раз за сессию браузера (~1,6 с). Без JS и при «уменьшить движение» — не показывается.
+// Страховка: если основной скрипт не загрузился, экран снимается сам через 6 секунд.
+const PRELOAD_BOOT =
+  "(function(d){d.classList.add('js');try{if(!sessionStorage.getItem('vc-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){" +
+  "d.classList.add('is-preloading');setTimeout(function(){d.classList.remove('is-preloading')},6000)}}catch(e){}})(document.documentElement);";
+
+const preloader = () => `
+<div class="preloader" aria-hidden="true">
+  <div class="preloader__row">
+    <span>${esc(SITE.name)} — студия разработки</span>
+    <span class="preloader__tags">Веб · AI · CRM · Боты</span>
+    <span>${new Date().getFullYear()}</span>
+  </div>
+  <div class="preloader__brand">
+    <span class="preloader__word">${[...SITE.wordmark].map((ch, i) => `<span style="--i:${i}">${esc(ch)}</span>`).join('')}</span>
+    <span class="preloader__dot"></span>
+  </div>
+  <div class="preloader__row preloader__row--bottom">
+    <span class="preloader__status"><span class="preloader__pulse"></span><span data-preload-status>Собираем интерфейс</span></span>
+    <span class="preloader__count"><span data-preload-count>000</span><small>%</small></span>
+  </div>
+  <div class="preloader__bar"><span data-preload-bar></span></div>
+</div>`;
 
 /* ---------------- шапка и меню ---------------- */
 // rel — относительный путь до корня сайта ('' на главной, '../' в /uslugi/, '../../' на странице услуги)
 export function header(rel, { home = false } = {}) {
   const r = rel || '';
   const homeHref = home ? '#top' : r || './';
-  return `
+  return `${preloader()}
 <header class="header" id="top">
   <div class="container header__inner">
     <a class="logo" href="${homeHref}" aria-label="${esc(SITE.name)} — на главную">

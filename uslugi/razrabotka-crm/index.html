@@ -30,7 +30,7 @@
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
   <link rel="preload" href="../../assets/fonts/onest-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../../css/style.css">
-  <script>document.documentElement.classList.add('js');</script>
+  <script>(function(d){d.classList.add('js');try{if(!sessionStorage.getItem('vc-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('is-preloading');setTimeout(function(){d.classList.remove('is-preloading')},6000)}}catch(e){}})(document.documentElement);</script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -256,6 +256,22 @@
 
 <a class="skip" href="#main">К содержимому</a>
 
+<div class="preloader" aria-hidden="true">
+  <div class="preloader__row">
+    <span>Vecode — студия разработки</span>
+    <span class="preloader__tags">Веб · AI · CRM · Боты</span>
+    <span>2026</span>
+  </div>
+  <div class="preloader__brand">
+    <span class="preloader__word"><span style="--i:0">v</span><span style="--i:1">e</span><span style="--i:2">c</span><span style="--i:3">o</span><span style="--i:4">d</span><span style="--i:5">e</span></span>
+    <span class="preloader__dot"></span>
+  </div>
+  <div class="preloader__row preloader__row--bottom">
+    <span class="preloader__status"><span class="preloader__pulse"></span><span data-preload-status>Собираем интерфейс</span></span>
+    <span class="preloader__count"><span data-preload-count>000</span><small>%</small></span>
+  </div>
+  <div class="preloader__bar"><span data-preload-bar></span></div>
+</div>
 <header class="header" id="top">
   <div class="container header__inner">
     <a class="logo" href="../../" aria-label="Vecode — на главную">
