@@ -206,7 +206,6 @@ export function footer(rel, services, { home = false, updated = SITE.updated } =
       <a class="footer__up" href="${top}">Наверх ↑</a>
     </div>
     ${SITE.legal.operator ? `<p class="footer__requisites">${esc(SITE.legal.operator)}${SITE.legal.inn ? `, ИНН ${esc(SITE.legal.inn)}` : ''}${SITE.legal.ogrn ? `, ОГРН ${esc(SITE.legal.ogrn)}` : ''}</p>` : '<!-- TODO: реквизиты оператора (SITE.legal в tools/seo/config.mjs) -->'}
-    <p class="footer__updated">Обновлено: <time datetime="${updated}">${ruDate(updated)}</time></p>
   </div>
 </footer>
 
