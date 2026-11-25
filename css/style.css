@@ -672,3 +672,20 @@ html.is-preloading .hero [data-reveal] { animation-play-state: paused; }
 @media (max-width: 640px) {
   .preloader__tags { display: none; }
 }
+
+/* ---------- Первый экран главной: текст слева, фото руки со смартфоном справа ---------- */
+/* фон совпадает с фоном фотографии (#f3f3f3), а фото стоит вплотную к нижнему краю блока —
+   срез запястья на снимке совпадает с краем первого экрана */
+.hero--home { --hero-pb: clamp(56px, 7vw, 96px); background: #f3f3f3; overflow: hidden; padding-bottom: var(--hero-pb); }
+.hero--home .hero__grid { align-self: stretch; align-items: end; }
+.hero--home .hero__text { align-self: center; }
+.hero__visual--photo { aspect-ratio: auto; max-height: none; margin-bottom: calc(-1 * var(--hero-pb)); justify-self: end; width: 100%; }
+.hero__visual--photo picture { display: block; }
+/* на широких экранах фото заходит в промежуток между колонками — так телефон крупнее, а текст не сжимается */
+@media (min-width: 1240px) { .hero__visual--photo { width: min(calc(100% + 64px), 620px); } }
+.hero__visual--photo img { display: block; width: 100%; height: auto; max-height: calc(100svh - var(--header) - 24px); object-fit: contain; object-position: bottom right; }
+
+@media (max-width: 900px) {
+  .hero__visual--photo { justify-self: center; width: min(86%, 420px); margin-top: 8px; }
+  .hero__visual--photo img { max-height: none; }
+}

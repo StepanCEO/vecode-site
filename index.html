@@ -263,7 +263,7 @@
 <main id="main">
 
   <!-- ============ ПЕРВЫЙ ЭКРАН ============ -->
-  <section class="hero">
+  <section class="hero hero--home">
     <div class="container hero__grid">
       <div class="hero__text">
         <p class="badge" data-reveal>
@@ -284,9 +284,13 @@
         </div>
       </div>
 
-      <div class="hero__visual" data-reveal>
-        <canvas class="graph" id="graph" role="img"
-          aria-label="Схема: путь проекта от идеи через аналитику, дизайн, разработку и тесты к релизу"></canvas>
+      <div class="hero__visual hero__visual--photo" data-reveal>
+        <picture>
+          <source type="image/avif" srcset="assets/hero/hand-phone-589.avif 589w, assets/hero/hand-phone-1151.avif 1151w" sizes="(max-width: 900px) 86vw, 620px">
+          <source type="image/webp" srcset="assets/hero/hand-phone-589.webp 589w, assets/hero/hand-phone-1151.webp 1151w" sizes="(max-width: 900px) 86vw, 620px">
+          <img src="assets/hero/hand-phone-589.jpg" width="1151" height="1367" fetchpriority="high" decoding="async"
+            alt="Смартфон в руке: экран приложения Vecode «Делаем продукты, которые работают на вас» с графиком роста">
+        </picture>
       </div>
     </div>
   </section>
