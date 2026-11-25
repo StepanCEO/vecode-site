@@ -107,6 +107,7 @@ export function header(rel, { home = false } = {}) {
       <span class="logo__text">${esc(SITE.wordmark)}</span>
     </a>
     <nav class="nav" aria-label="Основная навигация">
+      <a href="${r}o-studii/">О студии</a>
       <a href="${r}uslugi/">Услуги</a>
       <a href="${r}#work">Проекты</a>
       <a href="${r}#process">Процесс</a>
@@ -125,11 +126,12 @@ export function header(rel, { home = false } = {}) {
 <!-- Мобильное меню -->
 <div class="menu" id="menu" hidden>
   <nav class="menu__nav" aria-label="Мобильная навигация">
-    <a href="${r}uslugi/"><span>01</span>Услуги</a>
-    <a href="${r}#work"><span>02</span>Проекты</a>
-    <a href="${r}#process"><span>03</span>Процесс</a>
-    <a href="${r}#faq"><span>04</span>Вопросы</a>
-    <a href="${r}#contact"><span>05</span>Контакты</a>
+    <a href="${r}o-studii/"><span>01</span>О студии</a>
+    <a href="${r}uslugi/"><span>02</span>Услуги</a>
+    <a href="${r}#work"><span>03</span>Проекты</a>
+    <a href="${r}#process"><span>04</span>Процесс</a>
+    <a href="${r}#faq"><span>05</span>Вопросы</a>
+    <a href="${r}#contact"><span>06</span>Контакты</a>
   </nav>
   <div class="menu__actions">
     <a class="btn btn--accent" href="${r}#contact">Обсудить проект
@@ -175,7 +177,7 @@ export function footer(rel, services, { home = false, updated = SITE.updated } =
     <div class="footer__cols">
       <nav class="footer__col" aria-label="Компания">
         <p class="footer__label">Компания</p>
-        <a href="${r}#principles">О студии</a>
+        <a href="${r}o-studii/">О студии</a>
         <a href="${r}#process">Как мы работаем</a>
         <a href="${r}#faq">Вопросы и ответы</a>
       </nav>
@@ -590,5 +592,110 @@ export function tenderPage({ t, services, headHtml, updated }) {
       </form>
     </div>
   </section>`;
+  return page({ headHtml, rel, services, body, updated });
+}
+
+/* ---------------- о студии ---------------- */
+export function aboutPage({ a, services, headHtml, updated }) {
+  const rel = '../';
+  const bySlug = Object.fromEntries(services.map((s) => [s.slug, s]));
+  const L = SITE.legal;
+  const requisites = [
+    ['Полное наименование', L.operator],
+    ['ИНН', L.inn],
+    ['ОГРН', L.ogrn],
+    ['Юридический адрес', L.address],
+    ['Почта', SITE.email],
+    ['Телефон', SITE.phone],
+  ].filter(([, v]) => v);
+  const body = `
+  <section class="hero hero--page">
+    <div class="container">
+      ${crumbs([{ name: 'Главная', href: rel }, { name: 'О студии' }])}
+      <h1 class="page-title">${typo(a.h1)}</h1>
+      <p class="page-lead">${typo(a.answer)}</p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container about-intro">
+      <h2 class="about-intro__title" data-reveal>${typo(a.intro.title)}</h2>
+      <div class="about-intro__body" data-reveal>
+        ${a.intro.text.map((t) => `<p>${typo(t)}</p>`).join('\n        ')}
+        <div class="about-intro__actions">
+          <a class="btn btn--accent" href="${rel}#contact">Обсудить проект <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn--line" href="${rel}#process">Как мы работаем</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title" data-reveal>Студия в&nbsp;<em>цифрах</em>.</h2>
+        <p class="section__note" data-reveal>${typo('Правила, по которым мы работаем на каждом проекте.')}</p>
+      </div>
+      <div class="stats">
+        ${a.stats.map(([n, u, t]) => `<div class="stat" data-reveal>
+          <p class="stat__num">${esc(n)}<small>${esc(u)}</small></p>
+          <p class="stat__label">${typo(t)}</p>
+        </div>`).join('\n        ')}
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="areas">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title" data-reveal>Чем <em>занимаемся</em>.</h2>
+        <p class="section__note" data-reveal><a class="link" href="${rel}uslugi/">Все услуги <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+      </div>
+      <div class="about-grid">
+        ${a.areas.map((g, i) => `<article class="about-card" data-reveal>
+          <span class="about-card__num">${String(i + 1).padStart(2, '0')}</span>
+          <h3 class="about-card__title">${typo(g.name)}</h3>
+          <p class="about-card__text">${typo(g.text)}</p>
+          <div class="about-card__links">
+            ${(g.links.length ? g.links.map((sl) => `<a class="link" href="${rel}uslugi/${sl}/">${typo(bySlug[sl].name)} <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>`) : [`<a class="link" href="${rel}#contact">Обсудить поддержку <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>`]).join('\n            ')}
+          </div>
+        </article>`).join('\n        ')}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container about-product" data-reveal>
+      <p class="tile__tag">собственный продукт</p>
+      <h2 class="about-product__title">${typo(a.product.title)}</h2>
+      <p class="about-product__text">${typo(a.product.text)}</p>
+      <a class="link" href="${rel}uslugi/${a.product.link}/">${typo(bySlug[a.product.link].name)} на заказ <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+  </section>
+
+  <section class="section section--after-tight">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title" data-reveal>Наши <em>принципы</em>.</h2>
+      </div>
+      <div class="bento bento--flush">
+        ${a.principles.map(([tag, t, d], i) => `<article class="tile${i === 2 ? ' tile--accent' : ''}" data-reveal>
+          <p class="tile__tag">${esc(tag)}</p>
+          <h3 class="tile__title">${typo(t)}</h3>
+          <p class="tile__text">${typo(d)}</p>
+        </article>`).join('\n        ')}
+      </div>
+    </div>
+  </section>
+${requisites.length ? `
+  <section class="section" id="requisites">
+    <div class="container about-intro">
+      <h2 class="about-intro__title">Реквизиты</h2>
+      <dl class="requisites">
+        ${requisites.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('\n        ')}
+      </dl>
+    </div>
+  </section>` : '  <!-- TODO: реквизиты появятся сами, когда будет заполнен SITE.legal в tools/seo/config.mjs -->'}
+${cta(rel)}`;
   return page({ headHtml, rel, services, body, updated });
 }

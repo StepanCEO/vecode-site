@@ -7,13 +7,13 @@ import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SITE, FACTS, abs } from './seo/config.mjs';
-import { SERVICES, HOME, HOME_FAQ, HUB, TENDER } from './seo/content.mjs';
+import { SERVICES, HOME, HOME_FAQ, HUB, TENDER, ABOUT } from './seo/content.mjs';
 import {
   ID, graph, buildOrganization, buildWebSite, buildWebPage, buildPrimaryImage, buildBreadcrumbs,
   buildService, buildFaqPage, buildItemList,
 } from './seo/jsonld.mjs';
 import {
-  head, header, footer, homeServices, faqItems, formChips, servicePage, hubPage, notFoundPage, servicePath, legalPage, tenderPage, BASE,
+  head, header, footer, homeServices, faqItems, formChips, servicePage, hubPage, notFoundPage, servicePath, legalPage, tenderPage, aboutPage, BASE,
 } from './seo/templates.mjs';
 import { LEGAL_PAGES, missingLegal } from './seo/legal.mjs';
 
@@ -81,6 +81,24 @@ for (const s of SERVICES) {
   const headHtml = head({ title: HUB.title, description: HUB.description, path, rel: '../', jsonld });
   await write('uslugi/index.html', hubPage({ hub: HUB, services: SERVICES, headHtml, updated: SITE.updated }));
   pages.push({ path, file: 'uslugi/index.html', title: HUB.title, description: HUB.description, updated: SITE.updated, priority: '0.9' });
+}
+
+/* ---------- о студии ---------- */
+{
+  const path = ABOUT.path;
+  const jsonld = graph([
+    buildOrganization({ services: SERVICES }),
+    buildWebSite(),
+    buildWebPage({ path, title: ABOUT.title, description: ABOUT.description, type: 'AboutPage', updated: SITE.updated, mainEntity: ID.org }),
+    buildPrimaryImage(path),
+    buildBreadcrumbs(path, [
+      { name: 'Главная', path: '/' },
+      { name: 'О студии', path },
+    ]),
+  ]);
+  const headHtml = head({ title: ABOUT.title, description: ABOUT.description, path, rel: '../', jsonld });
+  await write('o-studii/index.html', aboutPage({ a: ABOUT, services: SERVICES, headHtml, updated: SITE.updated }));
+  pages.push({ path, file: 'o-studii/index.html', title: ABOUT.title, description: ABOUT.description, updated: SITE.updated, priority: '0.7' });
 }
 
 /* ---------- пригласить в тендер ---------- */
@@ -226,6 +244,7 @@ ${SERVICES.map(svcLine).join('\n')}
 ## Страницы
 
 - [Главная](${abs('/')}): о студии, принципы, процесс работы, частые вопросы
+- [О студии](${abs('/o-studii/')}): кто мы, чем занимаемся, принципы работы
 - [Все услуги](${abs('/uslugi/')}): обзор восьми направлений
 - [Частые вопросы](${abs('/#faq')}): стоимость, сроки, права на код, поддержка
 - [Оставить заявку](${abs('/#contact')}): форма для обсуждения проекта
