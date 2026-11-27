@@ -787,8 +787,16 @@ html.is-preloading .hero [data-reveal] { animation-play-state: paused; }
 .cc-bar i { width: 7px; height: 7px; border-radius: 50%; background: #cfd3da; }
 .cc-frame--front { z-index: 2; left: 7%; top: 16%; width: 70%; }
 .cc-frame--back { z-index: 1; right: 6%; top: 7%; width: 60%; }
-.cc-phone { position: absolute; overflow: hidden; aspect-ratio: 1170 / 2532; border: clamp(3px, 0.45vw, 7px) solid #0c0c0d; border-radius: clamp(16px, 2.2vw, 34px); background: #0c0c0d; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28); }
-.cc-phone img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+/* iPhone: все размеры — в долях ширины телефона (cqw), поэтому он одинаков в карточке и в большой обложке */
+.cc-phone { position: absolute; container-type: inline-size; aspect-ratio: 71.6 / 146.6; }
+.iphone { position: absolute; inset: 0; padding: 2.7cqw; border-radius: 16cqw; background: #111113; box-shadow: inset 0 0 0 0.75cqw #8a8c91, inset 0 0 0 1.2cqw #2a2b2e, 0 4cqw 10cqw rgba(0, 0, 0, 0.32), 0 1cqw 2.5cqw rgba(0, 0, 0, 0.18); }
+.iphone::before { content: ""; position: absolute; left: -0.8cqw; top: 22cqw; width: 1cqw; height: 40cqw; border-radius: 0.6cqw 0 0 0.6cqw; background: linear-gradient(#6f7176 0 6cqw, transparent 6cqw 11cqw, #6f7176 11cqw 23cqw, transparent 23cqw 27cqw, #6f7176 27cqw 39cqw, transparent 39cqw); }
+.iphone::after { content: ""; position: absolute; right: -0.8cqw; top: 32cqw; width: 1cqw; height: 19cqw; border-radius: 0 0.6cqw 0.6cqw 0; background: #6f7176; }
+.iphone__screen { position: relative; display: flex; flex-direction: column; height: 100%; overflow: hidden; border-radius: 13.5cqw; background: #fff; }
+.iphone__status { flex: none; display: flex; align-items: center; justify-content: space-between; height: 13cqw; padding: 1.2cqw 7cqw 0 11cqw; font: 600 4.4cqw/1 -apple-system, "SF Pro Text", var(--sans); letter-spacing: -0.02em; color: #000; }
+.iphone__status svg { width: 17cqw; height: auto; }
+.iphone__screen img { display: block; flex: 1; min-height: 0; width: 100%; object-fit: cover; object-position: top; }
+.iphone__island { position: absolute; top: 5cqw; left: 50%; width: 30cqw; height: 8.6cqw; border-radius: 5cqw; background: #000; transform: translateX(-50%); }
 .case-cover--phones .cc-phone { width: 24%; }
 .cc-phone--1 { left: 13%; top: 16%; }
 .cc-phone--2 { z-index: 2; left: 38%; top: 8%; }

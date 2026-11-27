@@ -712,13 +712,17 @@ function caseImg(c, shot, rel, { sizes = '(max-width: 900px) 100vw, 60vw', eager
 
 const browserBar = '<span class="cc-bar" aria-hidden="true"><i></i><i></i><i></i></span>';
 
+// iPhone: корпус с рамкой и кнопками, Dynamic Island и строка статуса над скриншотом
+const IPHONE_STATUS = `<div class="iphone__status" aria-hidden="true"><span>9:41</span><svg viewBox="0 0 68 12" fill="currentColor"><rect x="0" y="7.5" width="3" height="4" rx="1"/><rect x="4.5" y="5.5" width="3" height="6" rx="1"/><rect x="9" y="3" width="3" height="8.5" rx="1"/><rect x="13.5" y="0.5" width="3" height="11" rx="1"/><path d="M27.5 3.2c2.6 0 5 1 6.8 2.7l1.2-1.3A11.6 11.6 0 0 0 27.5 1.4a11.6 11.6 0 0 0-8 3.2l1.2 1.3c1.8-1.7 4.2-2.7 6.8-2.7Zm0 3.6c1.6 0 3.1.6 4.2 1.6l1.2-1.3a8 8 0 0 0-5.4-2.1 8 8 0 0 0-5.4 2.1l1.2 1.3c1.1-1 2.6-1.6 4.2-1.6Zm0 3.6c.6 0 1.1.2 1.5.6l-1.5 1.6-1.5-1.6c.4-.4.9-.6 1.5-.6Z"/><rect x="42" y="1" width="22" height="10.5" rx="3" fill="none" stroke="currentColor" stroke-opacity=".4"/><rect x="44" y="3" width="16" height="6.5" rx="1.6"/><rect x="65" y="4.3" width="1.8" height="3.8" rx=".9" fill-opacity=".4"/></svg></div>`;
+const iphone = (cls, img) => `<div class="cc-phone ${cls}"><div class="iphone"><div class="iphone__screen">${IPHONE_STATUS}${img}</div><span class="iphone__island" aria-hidden="true"></span></div></div>`;
+
 // Обложка: экраны в рамках браузера или телефона на цветном фоне, как в портфолио fcore
 function caseCover(c, rel, { large = false, eager = false } = {}) {
   const s = c.shots;
   const sizes = large ? '(max-width: 900px) 90vw, 70vw' : '(max-width: 900px) 90vw, 33vw';
   const inner =
     c.look.cover === 'phones'
-      ? s.slice(0, 3).map((x, i) => `<div class="cc-phone cc-phone--${i + 1}">${caseImg(c, x, rel, { sizes: large ? '(max-width: 900px) 30vw, 18vw' : '(max-width: 900px) 30vw, 10vw', eager: eager && i === 1, alt: '' })}</div>`).join('')
+      ? s.slice(0, 3).map((x, i) => iphone(`cc-phone--${i + 1}`, caseImg(c, x, rel, { sizes: large ? '(max-width: 900px) 30vw, 18vw' : '(max-width: 900px) 30vw, 10vw', eager: eager && i === 1, alt: '' }))).join('')
       : `<div class="cc-frame cc-frame--back">${browserBar}${caseImg(c, s[1], rel, { sizes, alt: '' })}</div><div class="cc-frame cc-frame--front">${browserBar}${caseImg(c, s[0], rel, { sizes, eager, alt: '' })}</div>`;
   return `<div class="case-cover case-cover--${c.look.cover}${large ? ' case-cover--large' : ''}" style="--case-bg: ${c.look.bg}" role="img" aria-label="${esc(`${c.name}: экраны проекта`)}">${inner}</div>`;
 }
@@ -845,7 +849,7 @@ ${c.roles?.length ? `
       </figure>`).join('\n      ')}
       ${phones.length ? `<div class="case-phones">
         ${phones.map((s) => `<figure class="case-shot" data-reveal>
-          <div class="cc-phone cc-phone--static">${caseImg(c, s, rel, { sizes: '(max-width: 900px) 45vw, 22vw' })}</div>
+          ${iphone('cc-phone--static', caseImg(c, s, rel, { sizes: '(max-width: 900px) 45vw, 22vw' }))}
           <figcaption>${typo(s.caption)}</figcaption>
         </figure>`).join('\n        ')}
       </div>` : ''}
