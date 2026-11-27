@@ -766,8 +766,8 @@ html.is-preloading .hero [data-reveal] { animation-play-state: paused; }
 }
 
 /* ---------- Проекты (кейсы) ---------- */
-.cases-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.cases-grid--hub { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 16px; }
+.cases-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 16px; }
+.cases-grid--hub { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .cases-grid--hub .case-card--featured { grid-column: 1 / -1; }
 .cases-grid--hub .case-card--featured .case-cover { aspect-ratio: 2 / 1; }
 .case-card { display: flex; flex-direction: column; gap: 8px; color: inherit; }
@@ -837,7 +837,7 @@ html.is-preloading .hero [data-reveal] { animation-play-state: paused; }
 .case-next:hover .ico { transform: translateX(6px); }
 
 @media (max-width: 1080px) {
-  .cases-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cases-grid--hub { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .case-phones { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 620px; margin: 0 auto; }
 }
 @media (max-width: 900px) {
@@ -854,3 +854,28 @@ html.is-preloading .hero [data-reveal] { animation-play-state: paused; }
   .case-done li { padding-left: 40px; font-size: 16px; }
   .case-hero__actions .btn { flex: 1 1 100%; }
 }
+
+/* ---------- Бегущая строка клиентов ---------- */
+.ticker--clients { display: flex; align-items: center; gap: clamp(16px, 3vw, 48px); padding-inline: var(--edge); -webkit-mask-image: none; mask-image: none; }
+.ticker__label { flex: none; font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.ticker__viewport { flex: 1; min-width: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.ticker--clients .ticker__track { animation-duration: 36s; }
+.ticker--clients .ticker__group span { font-size: clamp(22px, 2.2vw, 32px); font-weight: 600; letter-spacing: -0.03em; color: var(--fg); }
+.ticker--clients .ticker__group i { margin: 0 clamp(28px, 3.4vw, 56px); }
+@media (max-width: 600px) {
+  .ticker--clients { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .ticker__viewport { width: 100%; }
+}
+
+/* ---------- Кейс: ИИ-сотрудники и документ ---------- */
+.case-roles__title { margin-bottom: clamp(28px, 3.5vw, 48px); }
+.case-roles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.case-role { display: flex; flex-direction: column; gap: 12px; padding: clamp(24px, 2.6vw, 36px); border-radius: 24px; background: var(--surface); }
+.case-role:nth-child(1) { background: var(--green); color: var(--white); }
+.case-role:nth-child(1) .case-role__num, .case-role:nth-child(1) .case-role__text { color: rgba(255, 255, 255, 0.82); }
+.case-role__num { font-family: var(--mono); font-size: 12px; color: var(--accent-text); }
+.case-role__name { margin-top: clamp(16px, 3vw, 40px); font-size: clamp(24px, 2.2vw, 32px); font-weight: 500; line-height: 1.1; letter-spacing: -0.03em; }
+.case-role__text { font-size: 16px; line-height: 1.55; color: var(--muted); }
+.case-doc { max-width: 640px; margin: 0 auto; overflow: hidden; border-radius: 12px; box-shadow: 0 24px 60px rgba(16, 24, 40, 0.16), 0 2px 6px rgba(16, 24, 40, 0.08); }
+.case-doc img { display: block; width: 100%; height: auto; }
+@media (max-width: 900px) { .case-roles { grid-template-columns: minmax(0, 1fr); } }

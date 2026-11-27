@@ -814,6 +814,20 @@ export function casePage({ c, next, services, headHtml, updated }) {
     </div>
   </section>
 
+${c.roles?.length ? `
+  <section class="section section--tight">
+    <div class="container">
+      <h2 class="case-block__title case-roles__title" data-reveal>Команда ИИ-сотрудников</h2>
+      <div class="case-roles">
+        ${c.roles.map((r, i) => `<article class="case-role" data-reveal>
+          <span class="case-role__num">${String(i + 1).padStart(2, '0')}</span>
+          <h3 class="case-role__name">${typo(r.name)}</h3>
+          <p class="case-role__text">${typo(r.text)}</p>
+        </article>`).join('\n        ')}
+      </div>
+    </div>
+  </section>` : ''}
+
   <section class="section section--tight">
     <div class="container case-block">
       <h2 class="case-block__title" data-reveal>Что сделали</h2>
@@ -826,7 +840,7 @@ export function casePage({ c, next, services, headHtml, updated }) {
   <section class="panel case-gallery" aria-label="Экраны проекта">
     <div class="container">
       ${browsers.map((s) => `<figure class="case-shot${s.kind === 'browser' ? ' case-shot--browser' : ''}" data-reveal>
-        ${s.kind === 'browser' ? `<div class="cc-frame cc-frame--static">${browserBar}${caseImg(c, s, rel, { sizes: '(max-width: 1200px) 94vw, 1100px' })}</div>` : caseImg(c, s, rel, { sizes: '(max-width: 1200px) 94vw, 1100px' })}
+        ${s.kind === 'browser' ? `<div class="cc-frame cc-frame--static">${browserBar}${caseImg(c, s, rel, { sizes: '(max-width: 1200px) 94vw, 1100px' })}</div>` : s.kind === 'doc' ? `<div class="case-doc">${caseImg(c, s, rel, { sizes: '(max-width: 900px) 90vw, 640px' })}</div>` : caseImg(c, s, rel, { sizes: '(max-width: 1200px) 94vw, 1100px' })}
         <figcaption>${typo(s.caption)}</figcaption>
       </figure>`).join('\n      ')}
       ${phones.length ? `<div class="case-phones">
@@ -858,4 +872,19 @@ ${c.changes.length ? `
   </section>
 ${cta(rel)}`;
   return page({ headHtml, rel, services, body, updated });
+}
+
+/** Бегущая строка с клиентами на главной (между маркерами build:ticker). Вторая копия — для бесшовной прокрутки. */
+export function clientsTicker(clients) {
+  const items = [...clients, ...clients, ...clients].map((c) => `<span>${typo(c)}</span><i></i>`).join('');
+  return `  <div class="ticker ticker--clients">
+    <p class="ticker__label">Наши клиенты</p>
+    <ul class="sr-only">${clients.map((c) => `<li>${typo(c)}</li>`).join('')}</ul>
+    <div class="ticker__viewport" aria-hidden="true">
+      <div class="ticker__track">
+        <div class="ticker__group">${items}</div>
+        <div class="ticker__group">${items}</div>
+      </div>
+    </div>
+  </div>`;
 }

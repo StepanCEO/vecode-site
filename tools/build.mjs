@@ -7,13 +7,13 @@ import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SITE, FACTS, abs } from './seo/config.mjs';
-import { SERVICES, HOME, HOME_FAQ, HUB, TENDER, ABOUT, CASES, CASES_HUB } from './seo/content.mjs';
+import { SERVICES, HOME, HOME_FAQ, HUB, TENDER, ABOUT, CASES, CASES_HUB, CLIENTS } from './seo/content.mjs';
 import {
   ID, graph, buildOrganization, buildWebSite, buildWebPage, buildPrimaryImage, buildBreadcrumbs,
   buildService, buildFaqPage, buildItemList,
 } from './seo/jsonld.mjs';
 import {
-  head, header, footer, homeServices, faqItems, formChips, servicePage, hubPage, notFoundPage, servicePath, legalPage, tenderPage, aboutPage, casesHubPage, casePage, homeCases, casePath, BASE,
+  head, header, footer, homeServices, faqItems, formChips, servicePage, hubPage, notFoundPage, servicePath, legalPage, tenderPage, aboutPage, casesHubPage, casePage, homeCases, casePath, clientsTicker, BASE,
 } from './seo/templates.mjs';
 import { LEGAL_PAGES, missingLegal } from './seo/legal.mjs';
 
@@ -212,6 +212,7 @@ for (const doc of LEGAL_PAGES) {
     head: head({ title: HOME.title, description: HOME.description, path, rel: '', jsonld }),
     header: header('', { home: true }),
     services: homeServices(SERVICES),
+    ticker: clientsTicker(CLIENTS),
     work: homeCases(CASES),
     faq: faqItems(HOME_FAQ, 'faq'),
     chips: formChips(SERVICES),

@@ -30,7 +30,7 @@
   <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="preload" href="assets/fonts/manrope-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=80576255">
+  <link rel="stylesheet" href="css/style.css?v=3aa93ff0">
   <script>(function(d){d.classList.add('js');try{if(!sessionStorage.getItem('vc-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('is-preloading');setTimeout(function(){d.classList.remove('is-preloading')},6000)}}catch(e){}})(document.documentElement);</script>
   <script type="application/ld+json">
 {
@@ -296,20 +296,18 @@
   </section>
 
   <!-- ============ БЕГУЩАЯ СТРОКА ============ -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker__track">
-      <div class="ticker__group">
-        <span>Next.js</span><i></i><span>React Native</span><i></i><span>TypeScript</span><i></i><span>Python</span><i></i>
-        <span>PostgreSQL</span><i></i><span>Swift</span><i></i><span>Kotlin</span><i></i><span>Figma</span><i></i>
-        <span>LLM&nbsp;/&nbsp;RAG</span><i></i><span>Docker</span><i></i>
-      </div>
-      <div class="ticker__group">
-        <span>Next.js</span><i></i><span>React Native</span><i></i><span>TypeScript</span><i></i><span>Python</span><i></i>
-        <span>PostgreSQL</span><i></i><span>Swift</span><i></i><span>Kotlin</span><i></i><span>Figma</span><i></i>
-        <span>LLM&nbsp;/&nbsp;RAG</span><i></i><span>Docker</span><i></i>
+  <!-- build:ticker -->
+<div class="ticker ticker--clients">
+    <p class="ticker__label">Наши клиенты</p>
+    <ul class="sr-only"><li>АО «Кавминводы»</li><li>TelegaClub</li><li>Лизинг.ОРГ</li><li>Политерра</li></ul>
+    <div class="ticker__viewport" aria-hidden="true">
+      <div class="ticker__track">
+        <div class="ticker__group"><span>АО «Кавминводы»</span><i></i><span>TelegaClub</span><i></i><span>Лизинг.ОРГ</span><i></i><span>Политерра</span><i></i><span>АО «Кавминводы»</span><i></i><span>TelegaClub</span><i></i><span>Лизинг.ОРГ</span><i></i><span>Политерра</span><i></i><span>АО «Кавминводы»</span><i></i><span>TelegaClub</span><i></i><span>Лизинг.ОРГ</span><i></i><span>Политерра</span><i></i></div>
+        <div class="ticker__group"><span>АО «Кавминводы»</span><i></i><span>TelegaClub</span><i></i><span>Лизинг.ОРГ</span><i></i><span>Политерра</span><i></i><span>АО «Кавминводы»</span><i></i><span>TelegaClub</span><i></i><span>Лизинг.ОРГ</span><i></i><span>Политерра</span><i></i><span>АО «Кавминводы»</span><i></i><span>TelegaClub</span><i></i><span>Лизинг.ОРГ</span><i></i><span>Политерра</span><i></i></div>
       </div>
     </div>
   </div>
+<!-- /build:ticker -->
 
   <!-- ============ ПРИНЦИПЫ ============ -->
   <section class="section" id="principles">
@@ -544,6 +542,12 @@
         <p class="section__note" data-reveal>Кейсы с&nbsp;задачей, решением и&nbsp;цифрами, которые можно проверить. <a class="link" href="proekty/">Все проекты <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
       </div>
       <div class="cases-grid">
+        <a class="case-card" href="proekty/ai-otdel-prodazh/" data-reveal>
+          <div class="case-cover case-cover--browsers" style="--case-bg: linear-gradient(135deg, #e9edff 0%, #c9d2fb 100%)" role="img" aria-label="ИИ-отдел продаж для «Политерры»: экраны проекта"><div class="cc-frame cc-frame--back"><span class="cc-bar" aria-hidden="true"><i></i><i></i><i></i></span><img src="assets/cases/ai-otdel-prodazh/cny-800.webp" srcset="assets/cases/ai-otdel-prodazh/cny-800.webp 800w, assets/cases/ai-otdel-prodazh/cny-1600.webp 1600w" sizes="(max-width: 900px) 90vw, 33vw" width="1600" height="998" alt="" loading="lazy" decoding="async"></div><div class="cc-frame cc-frame--front"><span class="cc-bar" aria-hidden="true"><i></i><i></i><i></i></span><img src="assets/cases/ai-otdel-prodazh/summary-800.webp" srcset="assets/cases/ai-otdel-prodazh/summary-800.webp 800w, assets/cases/ai-otdel-prodazh/summary-1600.webp 1600w" sizes="(max-width: 900px) 90vw, 33vw" width="1600" height="998" alt="" loading="lazy" decoding="async"></div></div>
+          <span class="case-card__meta">AI-агенты · Политерра</span>
+          <span class="case-card__title">ИИ-отдел продаж для&nbsp;«Политерры»</span>
+          <span class="case-card__metric"><b>4 ИИ-сотрудника</b> менеджер, РОП, снабженец и&nbsp;маркетолог</span>
+        </a>
         <a class="case-card" href="proekty/crm-lizing/" data-reveal>
           <div class="case-cover case-cover--browsers" style="--case-bg: linear-gradient(135deg, #eef0f4 0%, #d9dee8 100%)" role="img" aria-label="CRM для лизингового брокера: экраны проекта"><div class="cc-frame cc-frame--back"><span class="cc-bar" aria-hidden="true"><i></i><i></i><i></i></span><img src="assets/cases/crm-lizing/banks-800.webp" srcset="assets/cases/crm-lizing/banks-800.webp 800w, assets/cases/crm-lizing/banks-1600.webp 1600w" sizes="(max-width: 900px) 90vw, 33vw" width="1600" height="1108" alt="" loading="lazy" decoding="async"></div><div class="cc-frame cc-frame--front"><span class="cc-bar" aria-hidden="true"><i></i><i></i><i></i></span><img src="assets/cases/crm-lizing/applications-800.webp" srcset="assets/cases/crm-lizing/applications-800.webp 800w, assets/cases/crm-lizing/applications-1600.webp 1600w" sizes="(max-width: 900px) 90vw, 33vw" width="1600" height="1000" alt="" loading="lazy" decoding="async"></div></div>
           <span class="case-card__meta">CRM · Лизинг.ОРГ</span>
