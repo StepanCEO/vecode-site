@@ -109,7 +109,7 @@ export function header(rel, { home = false } = {}) {
     <nav class="nav" aria-label="Основная навигация">
       <a href="${r}o-studii/">О студии</a>
       <a href="${r}uslugi/">Услуги</a>
-      <a href="${r}#work">Проекты</a>
+      <a href="${r}proekty/">Проекты</a>
       <a href="${r}#process">Процесс</a>
       <a href="${r}#faq">Вопросы</a>
       <a href="${r}#contact">Контакты</a>
@@ -128,7 +128,7 @@ export function header(rel, { home = false } = {}) {
   <nav class="menu__nav" aria-label="Мобильная навигация">
     <a href="${r}o-studii/"><span>01</span>О студии</a>
     <a href="${r}uslugi/"><span>02</span>Услуги</a>
-    <a href="${r}#work"><span>03</span>Проекты</a>
+    <a href="${r}proekty/"><span>03</span>Проекты</a>
     <a href="${r}#process"><span>04</span>Процесс</a>
     <a href="${r}#faq"><span>05</span>Вопросы</a>
     <a href="${r}#contact"><span>06</span>Контакты</a>
@@ -183,7 +183,7 @@ export function footer(rel, services, { home = false, updated = SITE.updated } =
       </nav>
       <nav class="footer__col" aria-label="Проекты">
         <p class="footer__label">Проекты</p>
-        <a href="${r}#work">Портфолио</a>
+        <a href="${r}proekty/">Портфолио</a>
         <a href="${r}uslugi/">Услуги</a>
         <a href="${r}#contact">Заполнить бриф</a>
         <a href="${r}tender/">Пригласить в&nbsp;тендер</a>
@@ -696,6 +696,166 @@ ${requisites.length ? `
       </dl>
     </div>
   </section>` : '  <!-- TODO: реквизиты появятся сами, когда будет заполнен SITE.legal в tools/seo/config.mjs -->'}
+${cta(rel)}`;
+  return page({ headHtml, rel, services, body, updated });
+}
+
+/* ---------------- кейсы ---------------- */
+export const casePath = (c) => `/proekty/${c.slug}/`;
+
+// Картинка кейса: два размера WebP (самый большой и вдвое меньший)
+function caseImg(c, shot, rel, { sizes = '(max-width: 900px) 100vw, 60vw', eager = false, alt = shot.caption } = {}) {
+  const half = shot.w / 2;
+  const base = `${rel}assets/cases/${c.slug}/${shot.file}`;
+  return `<img src="${base}-${half}.webp" srcset="${base}-${half}.webp ${half}w, ${base}-${shot.w}.webp ${shot.w}w" sizes="${sizes}" width="${shot.w}" height="${shot.h}" alt="${esc(alt)}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async">`;
+}
+
+const browserBar = '<span class="cc-bar" aria-hidden="true"><i></i><i></i><i></i></span>';
+
+// Обложка: экраны в рамках браузера или телефона на цветном фоне, как в портфолио fcore
+function caseCover(c, rel, { large = false, eager = false } = {}) {
+  const s = c.shots;
+  const sizes = large ? '(max-width: 900px) 90vw, 70vw' : '(max-width: 900px) 90vw, 33vw';
+  const inner =
+    c.look.cover === 'phones'
+      ? s.slice(0, 3).map((x, i) => `<div class="cc-phone cc-phone--${i + 1}">${caseImg(c, x, rel, { sizes: large ? '(max-width: 900px) 30vw, 18vw' : '(max-width: 900px) 30vw, 10vw', eager: eager && i === 1, alt: '' })}</div>`).join('')
+      : `<div class="cc-frame cc-frame--back">${browserBar}${caseImg(c, s[1], rel, { sizes, alt: '' })}</div><div class="cc-frame cc-frame--front">${browserBar}${caseImg(c, s[0], rel, { sizes, eager, alt: '' })}</div>`;
+  return `<div class="case-cover case-cover--${c.look.cover}${large ? ' case-cover--large' : ''}" style="--case-bg: ${c.look.bg}" role="img" aria-label="${esc(`${c.name}: экраны проекта`)}">${inner}</div>`;
+}
+
+function caseCard(c, rel, { featured = false } = {}) {
+  return `<a class="case-card${featured ? ' case-card--featured' : ''}" href="${rel}proekty/${c.slug}/" data-reveal>
+          ${caseCover(c, rel)}
+          <span class="case-card__meta">${esc(c.category)} · ${esc(c.client)}</span>
+          <span class="case-card__title">${typo(c.name)}</span>
+          <span class="case-card__metric"><b>${esc(c.metric[0])}</b> ${typo(c.metric[1])}</span>
+        </a>`;
+}
+
+/** Блок проектов на главной (между маркерами build:work) */
+export function homeCases(cases) {
+  return `    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title" data-reveal>Наши <em>проекты</em>.</h2>
+        <p class="section__note" data-reveal>${typo('Кейсы с задачей, решением и цифрами, которые можно проверить.')} <a class="link" href="proekty/">Все проекты <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+      </div>
+      <div class="cases-grid">
+        ${cases.map((c) => caseCard(c, '')).join('\n        ')}
+      </div>
+    </div>`;
+}
+
+export function casesHubPage({ hub, cases, services, headHtml, updated }) {
+  const rel = '../';
+  const cats = [...new Set(cases.map((c) => c.category))];
+  const body = `
+  <section class="hero hero--page">
+    <div class="container">
+      ${crumbs([{ name: 'Главная', href: rel }, { name: 'Проекты' }])}
+      <h1 class="page-title">${typo(hub.h1)}<sup class="page-title__count">${cases.length}</sup></h1>
+      <p class="page-lead">${typo(hub.answer)}</p>
+      <p class="case-cats">${cats.map((c) => `<span>${esc(c)} <b>${cases.filter((x) => x.category === c).length}</b></span>`).join('')}</p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="cases-grid cases-grid--hub">
+        ${cases.map((c, i) => caseCard(c, rel, { featured: i === 0 })).join('\n        ')}
+      </div>
+    </div>
+  </section>
+${cta(rel)}`;
+  return page({ headHtml, rel, services, body, updated });
+}
+
+export function casePage({ c, next, services, headHtml, updated }) {
+  const rel = '../../';
+  const browsers = c.shots.filter((s) => s.kind !== 'phone');
+  const phones = c.shots.filter((s) => s.kind === 'phone');
+  const body = `
+  <section class="hero hero--page case-hero">
+    <div class="container">
+      ${crumbs([{ name: 'Главная', href: rel }, { name: 'Проекты', href: `${rel}proekty/` }, { name: c.name }])}
+      <p class="case-hero__meta">${esc(c.category)} / ${esc(c.client)}</p>
+      <h1 class="page-title">${typo(c.name)}</h1>
+      <p class="page-lead">${typo(c.lead)}</p>
+      <ul class="case-tags" aria-label="Технологии">
+        ${c.stack.map((t) => `<li>${esc(t)}</li>`).join('')}
+      </ul>
+      <div class="case-hero__actions">
+        ${c.link ? `<a class="btn btn--accent" href="${esc(c.link.href)}" target="_blank" rel="noopener">Открыть ${esc(c.link.label)} <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>` : ''}
+        <a class="btn btn--line" href="${rel}#contact">Обсудить похожий проект</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight case-cover-wrap">
+    <div class="container">
+      ${caseCover(c, rel, { large: true, eager: true })}
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="stats">
+        ${c.results.map(([n, t]) => `<div class="stat" data-reveal>
+          <p class="stat__num">${esc(n)}</p>
+          <p class="stat__label">${typo(t)}</p>
+        </div>`).join('\n        ')}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container case-block">
+      <h2 class="case-block__title" data-reveal>Задача</h2>
+      <p class="case-block__lead" data-reveal>${typo(c.task)}</p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container case-block">
+      <h2 class="case-block__title" data-reveal>Что сделали</h2>
+      <ol class="case-done" data-reveal>
+        ${c.done.map((d) => `<li>${typo(d)}</li>`).join('\n        ')}
+      </ol>
+    </div>
+  </section>
+
+  <section class="panel case-gallery" aria-label="Экраны проекта">
+    <div class="container">
+      ${browsers.map((s) => `<figure class="case-shot${s.kind === 'browser' ? ' case-shot--browser' : ''}" data-reveal>
+        ${s.kind === 'browser' ? `<div class="cc-frame cc-frame--static">${browserBar}${caseImg(c, s, rel, { sizes: '(max-width: 1200px) 94vw, 1100px' })}</div>` : caseImg(c, s, rel, { sizes: '(max-width: 1200px) 94vw, 1100px' })}
+        <figcaption>${typo(s.caption)}</figcaption>
+      </figure>`).join('\n      ')}
+      ${phones.length ? `<div class="case-phones">
+        ${phones.map((s) => `<figure class="case-shot" data-reveal>
+          <div class="cc-phone cc-phone--static">${caseImg(c, s, rel, { sizes: '(max-width: 900px) 45vw, 22vw' })}</div>
+          <figcaption>${typo(s.caption)}</figcaption>
+        </figure>`).join('\n        ')}
+      </div>` : ''}
+    </div>
+  </section>
+${c.changes.length ? `
+  <section class="section section--tight">
+    <div class="container case-block">
+      <h2 class="case-block__title" data-reveal>Что изменилось для клиента</h2>
+      <ul class="checklist" data-reveal>
+        ${c.changes.map((d) => `<li>${typo(d)}</li>`).join('\n        ')}
+      </ul>
+    </div>
+  </section>` : ''}
+
+  <section class="section section--tight">
+    <div class="container">
+      <a class="case-next" href="${rel}proekty/${next.slug}/">
+        <span class="case-next__label">Следующий проект</span>
+        <span class="case-next__name">${typo(next.name)}</span>
+        <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg>
+      </a>
+    </div>
+  </section>
 ${cta(rel)}`;
   return page({ headHtml, rel, services, body, updated });
 }

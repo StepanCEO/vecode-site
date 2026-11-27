@@ -7,13 +7,13 @@ import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SITE, FACTS, abs } from './seo/config.mjs';
-import { SERVICES, HOME, HOME_FAQ, HUB, TENDER, ABOUT } from './seo/content.mjs';
+import { SERVICES, HOME, HOME_FAQ, HUB, TENDER, ABOUT, CASES, CASES_HUB } from './seo/content.mjs';
 import {
   ID, graph, buildOrganization, buildWebSite, buildWebPage, buildPrimaryImage, buildBreadcrumbs,
   buildService, buildFaqPage, buildItemList,
 } from './seo/jsonld.mjs';
 import {
-  head, header, footer, homeServices, faqItems, formChips, servicePage, hubPage, notFoundPage, servicePath, legalPage, tenderPage, aboutPage, BASE,
+  head, header, footer, homeServices, faqItems, formChips, servicePage, hubPage, notFoundPage, servicePath, legalPage, tenderPage, aboutPage, casesHubPage, casePage, homeCases, casePath, BASE,
 } from './seo/templates.mjs';
 import { LEGAL_PAGES, missingLegal } from './seo/legal.mjs';
 
@@ -81,6 +81,54 @@ for (const s of SERVICES) {
   const headHtml = head({ title: HUB.title, description: HUB.description, path, rel: '../', jsonld });
   await write('uslugi/index.html', hubPage({ hub: HUB, services: SERVICES, headHtml, updated: SITE.updated }));
   pages.push({ path, file: 'uslugi/index.html', title: HUB.title, description: HUB.description, updated: SITE.updated, priority: '0.9' });
+}
+
+/* ---------- проекты (кейсы) ---------- */
+if (existsSync(out('proekty'))) {
+  for (const d of await readdir(out('proekty'), { withFileTypes: true })) {
+    if (d.isDirectory() && !CASES.some((c) => c.slug === d.name)) await rm(out(`proekty/${d.name}`), { recursive: true });
+  }
+}
+{
+  const path = CASES_HUB.path;
+  const jsonld = graph([
+    buildOrganization({ services: SERVICES }),
+    buildWebSite(),
+    buildWebPage({ path, title: CASES_HUB.title, description: CASES_HUB.description, type: 'CollectionPage', mainEntity: abs(`${path}#cases`) }),
+    buildPrimaryImage(path),
+    buildBreadcrumbs(path, [
+      { name: 'Главная', path: '/' },
+      { name: 'Проекты', path },
+    ]),
+    {
+      '@type': 'ItemList',
+      '@id': abs(`${path}#cases`),
+      name: 'Проекты студии Vecode',
+      numberOfItems: CASES.length,
+      itemListElement: CASES.map((c, i) => ({ '@type': 'ListItem', position: i + 1, url: abs(casePath(c)), name: c.name })),
+    },
+  ]);
+  const headHtml = head({ title: CASES_HUB.title, description: CASES_HUB.description, path, rel: '../', jsonld });
+  await write('proekty/index.html', casesHubPage({ hub: CASES_HUB, cases: CASES, services: SERVICES, headHtml, updated: SITE.updated }));
+  pages.push({ path, file: 'proekty/index.html', title: CASES_HUB.title, description: CASES_HUB.description, updated: SITE.updated, priority: '0.8' });
+}
+for (const [i, c] of CASES.entries()) {
+  const path = casePath(c);
+  const jsonld = graph([
+    buildOrganization({ services: SERVICES }),
+    buildWebSite(),
+    buildWebPage({ path, title: c.title, description: c.description }),
+    buildPrimaryImage(path),
+    buildBreadcrumbs(path, [
+      { name: 'Главная', path: '/' },
+      { name: 'Проекты', path: CASES_HUB.path },
+      { name: c.name, path },
+    ]),
+  ]);
+  const headHtml = head({ title: c.title, description: c.description, path, rel: '../../', jsonld });
+  const next = CASES[(i + 1) % CASES.length];
+  await write(`proekty/${c.slug}/index.html`, casePage({ c, next, services: SERVICES, headHtml, updated: SITE.updated }));
+  pages.push({ path, file: `proekty/${c.slug}/index.html`, title: c.title, description: c.description, updated: SITE.updated, priority: '0.7' });
 }
 
 /* ---------- о студии ---------- */
@@ -164,6 +212,7 @@ for (const doc of LEGAL_PAGES) {
     head: head({ title: HOME.title, description: HOME.description, path, rel: '', jsonld }),
     header: header('', { home: true }),
     services: homeServices(SERVICES),
+    work: homeCases(CASES),
     faq: faqItems(HOME_FAQ, 'faq'),
     chips: formChips(SERVICES),
     footer: footer('', SERVICES, { home: true }),
@@ -246,6 +295,8 @@ ${SERVICES.map(svcLine).join('\n')}
 - [Главная](${abs('/')}): о студии, принципы, процесс работы, частые вопросы
 - [О студии](${abs('/o-studii/')}): кто мы, чем занимаемся, принципы работы
 - [Все услуги](${abs('/uslugi/')}): обзор восьми направлений
+- [Проекты](${abs('/proekty/')}): кейсы с задачами, решениями и цифрами
+${CASES.map((c) => `- [${c.name}](${abs(casePath(c))}): ${c.lead}`).join('\n')}
 - [Частые вопросы](${abs('/#faq')}): стоимость, сроки, права на код, поддержка
 - [Оставить заявку](${abs('/#contact')}): форма для обсуждения проекта
 - [Пригласить в тендер](${abs('/tender/')}): приглашение в тендер или закупку

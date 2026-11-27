@@ -28,6 +28,10 @@
 - [Главная](https://stepanceo.github.io/vecode-site/): о студии, принципы, процесс работы, частые вопросы
 - [О студии](https://stepanceo.github.io/vecode-site/o-studii/): кто мы, чем занимаемся, принципы работы
 - [Все услуги](https://stepanceo.github.io/vecode-site/uslugi/): обзор восьми направлений
+- [Проекты](https://stepanceo.github.io/vecode-site/proekty/): кейсы с задачами, решениями и цифрами
+- [CRM для лизингового брокера](https://stepanceo.github.io/vecode-site/proekty/crm-lizing/): Заявки на лизинг от «Новой» до «Выдано»: проверка компании по ИНН, предложения банков прямо в системе, календарь и уведомления.
+- [Каталог авто и спецтехники в лизинг](https://stepanceo.github.io/vecode-site/proekty/katalog-lizing/): Каталог, который наполняется сам: каждую ночь робот собирает технику с сайтов лизинговых компаний, а в карточке сразу видно платёж каждого банка.
+- [SMM-панель под ключ за неделю](https://stepanceo.github.io/vecode-site/proekty/smm-panel/): Сервис заказов, оплат и автоматизации продвижения в Telegram и соцсетях: сайт, личный кабинет, админка и API для реселлеров.
 - [Частые вопросы](https://stepanceo.github.io/vecode-site/#faq): стоимость, сроки, права на код, поддержка
 - [Оставить заявку](https://stepanceo.github.io/vecode-site/#contact): форма для обсуждения проекта
 - [Пригласить в тендер](https://stepanceo.github.io/vecode-site/tender/): приглашение в тендер или закупку

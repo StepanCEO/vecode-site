@@ -30,7 +30,7 @@
   <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="preload" href="assets/fonts/manrope-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=386e8c1d">
+  <link rel="stylesheet" href="css/style.css?v=80576255">
   <script>(function(d){d.classList.add('js');try{if(!sessionStorage.getItem('vc-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('is-preloading');setTimeout(function(){d.classList.remove('is-preloading')},6000)}}catch(e){}})(document.documentElement);</script>
   <script type="application/ld+json">
 {
@@ -228,7 +228,7 @@
     <nav class="nav" aria-label="Основная навигация">
       <a href="o-studii/">О студии</a>
       <a href="uslugi/">Услуги</a>
-      <a href="#work">Проекты</a>
+      <a href="proekty/">Проекты</a>
       <a href="#process">Процесс</a>
       <a href="#faq">Вопросы</a>
       <a href="#contact">Контакты</a>
@@ -247,7 +247,7 @@
   <nav class="menu__nav" aria-label="Мобильная навигация">
     <a href="o-studii/"><span>01</span>О студии</a>
     <a href="uslugi/"><span>02</span>Услуги</a>
-    <a href="#work"><span>03</span>Проекты</a>
+    <a href="proekty/"><span>03</span>Проекты</a>
     <a href="#process"><span>04</span>Процесс</a>
     <a href="#faq"><span>05</span>Вопросы</a>
     <a href="#contact"><span>06</span>Контакты</a>
@@ -537,91 +537,34 @@
 
   <!-- ============ ПРОЕКТЫ / КОНЦЕПТЫ ============ -->
   <section class="section band is-dark" id="work">
-    <div class="container">
+<!-- build:work -->
+<div class="container">
       <div class="section__head">
-        <h2 class="section__title" data-reveal>Что мы <em>строим</em>.</h2>
-        <p class="section__note" data-reveal>Типовые продукты, которые мы разрабатываем: от&nbsp;личных кабинетов и&nbsp;приложений до&nbsp;AI-ассистентов.</p>
+        <h2 class="section__title" data-reveal>Наши <em>проекты</em>.</h2>
+        <p class="section__note" data-reveal>Кейсы с&nbsp;задачей, решением и&nbsp;цифрами, которые можно проверить. <a class="link" href="proekty/">Все проекты <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
       </div>
-
-      <div class="work">
-        <!-- 01 -->
-        <article class="card card--dark" data-reveal>
-          <div class="card__top"><span>01 / 03</span><span class="chip">веб</span></div>
-          <div class="mock" aria-hidden="true">
-            <div class="dash">
-              <div class="dash__bar"><i></i><i></i><i></i></div>
-              <div class="dash__body">
-                <div class="dash__side"><b class="on"></b><b></b><b></b><b></b></div>
-                <div class="dash__main">
-                  <div class="dash__kpis">
-                    <div><small>Заявки</small><strong>128</strong></div>
-                    <div><small>Конверсия</small><strong>4,2%</strong></div>
-                    <div><small>Ответ</small><strong>2 мин</strong></div>
-                  </div>
-                  <div class="dash__chart">
-                    <span style="--h:34%"></span><span style="--h:48%"></span><span style="--h:40%"></span>
-                    <span style="--h:62%"></span><span style="--h:55%"></span><span style="--h:74%"></span>
-                    <span class="on" style="--h:92%"></span><span style="--h:68%"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card__bottom">
-            <h3 class="card__title">Веб-платформа</h3>
-            <p class="card__text">Личный кабинет с&nbsp;аналитикой: заявки, клиенты и&nbsp;показатели бизнеса на&nbsp;одном экране.</p>
-          </div>
-        </article>
-
-        <!-- 02 -->
-        <article class="card card--accent" data-reveal>
-          <div class="card__top"><span>02 / 03</span><span class="chip">мобайл</span></div>
-          <div class="mock" aria-hidden="true">
-            <div class="phone">
-              <div class="phone__screen">
-                <div class="phone__island"></div>
-                <p class="phone__title">Запись на&nbsp;сегодня</p>
-                <div class="slot"><i></i><div><b>10:30</b><span>Консультация</span></div></div>
-                <div class="slot slot--on"><i></i><div><b>12:00</b><span>Первый приём</span></div></div>
-                <div class="slot"><i></i><div><b>15:45</b><span>Повторный визит</span></div></div>
-                <div class="phone__btn">Записаться</div>
-              </div>
-            </div>
-          </div>
-          <div class="card__bottom">
-            <h3 class="card__title">Мобильное приложение</h3>
-            <p class="card__text">Сервис записи и&nbsp;оплаты услуг: клиент выбирает время за&nbsp;три касания.</p>
-          </div>
-        </article>
-
-        <!-- 03 -->
-        <article class="card card--paper" data-reveal>
-          <div class="card__top"><span>03 / 03</span><span class="chip">AI</span></div>
-          <div class="mock" aria-hidden="true">
-            <div class="chat">
-              <p class="msg msg--user">Где мой заказ №&nbsp;1042?</p>
-              <p class="msg msg--bot">Передан в&nbsp;доставку&nbsp;— приедет завтра до&nbsp;18:00. Прислать трек-номер?</p>
-              <p class="msg msg--user">Да, пожалуйста</p>
-              <p class="msg msg--bot msg--typing"><i></i><i></i><i></i></p>
-            </div>
-          </div>
-          <div class="card__bottom">
-            <h3 class="card__title">AI-ассистент</h3>
-            <p class="card__text">Помощник поддержки, который отвечает клиентам по&nbsp;данным из&nbsp;ваших систем.</p>
-          </div>
-        </article>
-
-        <!-- Ваш проект -->
-        <a class="card card--empty" href="#contact" data-reveal>
-          <div class="card__top"><span>→</span><span class="chip">ваш проект</span></div>
-          <div class="card__plus" aria-hidden="true"></div>
-          <div class="card__bottom">
-            <h3 class="card__title">Расскажите о&nbsp;своей задаче</h3>
-            <p class="card__text">Предложим решение и&nbsp;бесплатно оценим проект по&nbsp;этапам. Ответим в&nbsp;течение рабочего дня.</p>
-          </div>
+      <div class="cases-grid">
+        <a class="case-card" href="proekty/crm-lizing/" data-reveal>
+          <div class="case-cover case-cover--browsers" style="--case-bg: linear-gradient(135deg, #eef0f4 0%, #d9dee8 100%)" role="img" aria-label="CRM для лизингового брокера: экраны проекта"><div class="cc-frame cc-frame--back"><span class="cc-bar" aria-hidden="true"><i></i><i></i><i></i></span><img src="assets/cases/crm-lizing/banks-800.webp" srcset="assets/cases/crm-lizing/banks-800.webp 800w, assets/cases/crm-lizing/banks-1600.webp 1600w" sizes="(max-width: 900px) 90vw, 33vw" width="1600" height="1108" alt="" loading="lazy" decoding="async"></div><div class="cc-frame cc-frame--front"><span class="cc-bar" aria-hidden="true"><i></i><i></i><i></i></span><img src="assets/cases/crm-lizing/applications-800.webp" srcset="assets/cases/crm-lizing/applications-800.webp 800w, assets/cases/crm-lizing/applications-1600.webp 1600w" sizes="(max-width: 900px) 90vw, 33vw" width="1600" height="1000" alt="" loading="lazy" decoding="async"></div></div>
+          <span class="case-card__meta">CRM · Лизинг.ОРГ</span>
+          <span class="case-card__title">CRM для&nbsp;лизингового брокера</span>
+          <span class="case-card__metric"><b>14 банков</b> в&nbsp;калькуляторе платежей</span>
+        </a>
+        <a class="case-card" href="proekty/katalog-lizing/" data-reveal>
+          <div class="case-cover case-cover--phones" style="--case-bg: linear-gradient(135deg, #1a8754 0%, #0e5a37 100%)" role="img" aria-label="Каталог авто и спецтехники в лизинг: экраны проекта"><div class="cc-phone cc-phone--1"><img src="assets/cases/katalog-lizing/catalog-390.webp" srcset="assets/cases/katalog-lizing/catalog-390.webp 390w, assets/cases/katalog-lizing/catalog-780.webp 780w" sizes="(max-width: 900px) 30vw, 10vw" width="780" height="1688" alt="" loading="lazy" decoding="async"></div><div class="cc-phone cc-phone--2"><img src="assets/cases/katalog-lizing/car-390.webp" srcset="assets/cases/katalog-lizing/car-390.webp 390w, assets/cases/katalog-lizing/car-780.webp 780w" sizes="(max-width: 900px) 30vw, 10vw" width="780" height="1688" alt="" loading="lazy" decoding="async"></div><div class="cc-phone cc-phone--3"><img src="assets/cases/katalog-lizing/banks-390.webp" srcset="assets/cases/katalog-lizing/banks-390.webp 390w, assets/cases/katalog-lizing/banks-780.webp 780w" sizes="(max-width: 900px) 30vw, 10vw" width="780" height="1688" alt="" loading="lazy" decoding="async"></div></div>
+          <span class="case-card__meta">Сайт-каталог · Лизинг.ОРГ</span>
+          <span class="case-card__title">Каталог авто и&nbsp;спецтехники в&nbsp;лизинг</span>
+          <span class="case-card__metric"><b>7 300+</b> единиц техники без&nbsp;ручного ввода</span>
+        </a>
+        <a class="case-card" href="proekty/smm-panel/" data-reveal>
+          <div class="case-cover case-cover--browsers" style="--case-bg: linear-gradient(135deg, #e6f2ff 0%, #c9e0fb 100%)" role="img" aria-label="SMM-панель под ключ за неделю: экраны проекта"><div class="cc-frame cc-frame--back"><span class="cc-bar" aria-hidden="true"><i></i><i></i><i></i></span><img src="assets/cases/smm-panel/order-800.webp" srcset="assets/cases/smm-panel/order-800.webp 800w, assets/cases/smm-panel/order-1600.webp 1600w" sizes="(max-width: 900px) 90vw, 33vw" width="1600" height="1350" alt="" loading="lazy" decoding="async"></div><div class="cc-frame cc-frame--front"><span class="cc-bar" aria-hidden="true"><i></i><i></i><i></i></span><img src="assets/cases/smm-panel/home-800.webp" srcset="assets/cases/smm-panel/home-800.webp 800w, assets/cases/smm-panel/home-1600.webp 1600w" sizes="(max-width: 900px) 90vw, 33vw" width="1600" height="1000" alt="" loading="lazy" decoding="async"></div></div>
+          <span class="case-card__meta">Веб-сервис · TelegaClub</span>
+          <span class="case-card__title">SMM-панель под ключ за&nbsp;неделю</span>
+          <span class="case-card__metric"><b>1 неделя</b> от&nbsp;старта до&nbsp;запуска</span>
         </a>
       </div>
     </div>
+<!-- /build:work -->
   </section>
 
   <!-- ============ ПРОЦЕСС ============ -->
@@ -845,7 +788,7 @@
       </nav>
       <nav class="footer__col" aria-label="Проекты">
         <p class="footer__label">Проекты</p>
-        <a href="#work">Портфолио</a>
+        <a href="proekty/">Портфолио</a>
         <a href="uslugi/">Услуги</a>
         <a href="#contact">Заполнить бриф</a>
         <a href="tender/">Пригласить в&nbsp;тендер</a>
