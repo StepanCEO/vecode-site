@@ -717,14 +717,14 @@ const IPHONE_STATUS = `<div class="iphone__status" aria-hidden="true"><span>9:41
 const iphone = (cls, img) => `<div class="cc-phone ${cls}"><div class="iphone"><div class="iphone__screen">${IPHONE_STATUS}${img}</div><span class="iphone__island" aria-hidden="true"></span></div></div>`;
 
 // Обложка: экраны в рамках браузера или телефона на цветном фоне, как в портфолио fcore
-function caseCover(c, rel, { large = false, eager = false } = {}) {
+function caseCover(c, rel, { large = false, eager = false, fill = false } = {}) {
   const s = c.shots;
   const sizes = large ? '(max-width: 900px) 90vw, 70vw' : '(max-width: 900px) 90vw, 33vw';
   const inner =
     c.look.cover === 'phones'
       ? s.slice(0, 3).map((x, i) => iphone(`cc-phone--${i + 1}`, caseImg(c, x, rel, { sizes: large ? '(max-width: 900px) 30vw, 18vw' : '(max-width: 900px) 30vw, 10vw', eager: eager && i === 1, alt: '' }))).join('')
       : `<div class="cc-frame cc-frame--back">${browserBar}${caseImg(c, s[1], rel, { sizes, alt: '' })}</div><div class="cc-frame cc-frame--front">${browserBar}${caseImg(c, s[0], rel, { sizes, eager, alt: '' })}</div>`;
-  return `<div class="case-cover case-cover--${c.look.cover}${large ? ' case-cover--large' : ''}" style="--case-bg: ${c.look.bg}" role="img" aria-label="${esc(`${c.name}: экраны проекта`)}">${inner}</div>`;
+  return `<div class="case-cover case-cover--${c.look.cover}${large ? ' case-cover--large' : ''}${fill ? ' case-cover--fill' : ''}" style="--case-bg: ${c.look.bg}" role="img" aria-label="${esc(`${c.name}: экраны проекта`)}">${inner}</div>`;
 }
 
 function caseCard(c, rel, { featured = false } = {}) {
@@ -736,15 +736,27 @@ function caseCard(c, rel, { featured = false } = {}) {
         </a>`;
 }
 
-/** Блок проектов на главной (между маркерами build:work) */
+/** Блок проектов на главной (между маркерами build:work): стопка карточек, которые прилипают к верху экрана
+ * и наезжают друг на друга при прокрутке — как «лучшие кейсы» у fcore. Только CSS (position: sticky), без скриптов. */
 export function homeCases(cases) {
+  const total = String(cases.length).padStart(2, '0');
   return `    <div class="container">
       <div class="section__head">
         <h2 class="section__title" data-reveal>Наши <em>проекты</em>.</h2>
         <p class="section__note" data-reveal>${typo('Кейсы с задачей, решением и цифрами, которые можно проверить.')} <a class="link" href="proekty/">Все проекты <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
       </div>
-      <div class="cases-grid">
-        ${cases.map((c) => caseCard(c, '')).join('\n        ')}
+      <div class="case-stack">
+        ${cases.map((c, i) => `<a class="case-stack__card case-stack__card--${c.look.tone}" href="proekty/${c.slug}/" style="--i: ${i}; --case-bg: ${c.look.bg}">
+          <div class="case-stack__info">
+            <div class="case-stack__top"><span class="case-stack__pill">${String(i + 1).padStart(2, '0')} / ${total}</span><span class="case-stack__pill">${esc(c.category)}</span></div>
+            <p class="case-stack__client">${esc(c.client)}</p>
+            <h3 class="case-stack__title">${typo(c.name)}</h3>
+            <p class="case-stack__lead">${typo(c.lead)}</p>
+            <p class="case-stack__metric"><b>${esc(c.metric[0])}</b> ${typo(c.metric[1])}</p>
+            <span class="case-stack__cta">Смотреть кейс <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+          </div>
+          <div class="case-stack__visual">${caseCover(c, '', { fill: true })}</div>
+        </a>`).join('\n        ')}
       </div>
     </div>`;
 }
