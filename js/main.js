@@ -8,8 +8,8 @@
    на адрес из блока контактов (#contact-email в index.html). */
 const CONFIG = {
   formEndpoint: '',
-  // TODO: рабочая почта студии — на неё уходит письмо, если formEndpoint не задан
-  email: 'hello@vecode.example',
+  // рабочая почта студии — на неё уходит письмо, если formEndpoint не задан
+  email: 'vecode@vecode.tech',
 };
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
