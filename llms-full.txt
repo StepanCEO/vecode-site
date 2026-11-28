@@ -75,7 +75,7 @@ Vecode разрабатывает сайты под ключ: корпорати
 
 ### Технологии
 
-Next.js, React, TypeScript, Headless CMS, Node.js, Figma
+Next.js 16, React 19, TypeScript, Server Components, Payload CMS, Strapi, Node.js, Playwright, Schema.org, Figma
 
 ### Вопросы и ответы
 
@@ -131,7 +131,7 @@ Vecode разрабатывает чат-боты для Telegram, VK, MAX и в
 
 ### Технологии
 
-Python, Node.js, Telegram Bot API, VK API, LLM / RAG, PostgreSQL
+Telegram Mini Apps, MAX Bot API, Python, LLM и RAG, Tool calling, SpeechKit, ЮKassa, Telegram Bot API, VK API, Node.js, PostgreSQL
 
 ### Вопросы и ответы
 
@@ -188,7 +188,7 @@ Vecode разрабатывает CRM на заказ под процессы к
 
 ### Технологии
 
-TypeScript, Node.js, Python, PostgreSQL, React, REST API
+Next.js 16, TypeScript, PostgreSQL, Prisma, pg-boss, YandexGPT, SpeechKit, RBAC, WebSockets, 1С, React, REST API
 
 ### Вопросы и ответы
 
@@ -247,7 +247,7 @@ Vecode автоматизирует рутинные процессы: обра�
 
 ### Технологии
 
-Python, Node.js, n8n, REST API, LLM, PostgreSQL
+n8n, Python, Playwright, Yandex Vision OCR, LLM, IMAP, Docker, Node.js, REST API, PostgreSQL
 
 ### Вопросы и ответы
 
@@ -303,7 +303,7 @@ Vecode разрабатывает AI-агентов на основе больш
 
 ### Технологии
 
-Python, LLM, RAG, Векторные базы данных, YandexGPT, GigaChat
+Мультиагентные системы, MCP, Tool calling, RAG, pgvector, YandexGPT, GigaChat, DeepSeek, OpenAI, Qwen, vLLM, Evals, Python
 
 ### Вопросы и ответы
 
@@ -359,7 +359,7 @@ Vecode разрабатывает веб-приложения на заказ: S
 
 ### Технологии
 
-Next.js, React, TypeScript, Node.js, Python, PostgreSQL
+Next.js 16, React 19, TypeScript, Мультиарендность, Node.js, PostgreSQL, WebSockets, ЮKassa, Docker, GitHub Actions, Sentry, Python
 
 ### Вопросы и ответы
 
@@ -415,7 +415,7 @@ Vecode разрабатывает мобильные приложения для
 
 ### Технологии
 
-React Native, Expo, Swift, Kotlin, TypeScript, Firebase
+SwiftUI, Jetpack Compose, React Native, Expo Router, Swift, Kotlin, TypeScript, Firebase, RuStore, Push-уведомления, Оплата в приложении
 
 ### Вопросы и ответы
 
@@ -471,7 +471,7 @@ Vecode связывает между собой сервисы компании:
 
 ### Технологии
 
-REST API, Webhooks, Node.js, Python, PostgreSQL, Очереди сообщений
+REST API, OpenAPI, Webhooks, 1С (OData), amoCRM API, Битрикс24, ЮKassa, СБП, DaData, IP-телефония, Очереди сообщений, Node.js, Python
 
 ### Вопросы и ответы
 

@@ -749,6 +749,7 @@ html.is-preloading .hero [data-reveal] { animation-play-state: paused; }
 .about-card__text { font-size: 15px; line-height: 1.55; color: var(--muted); }
 .about-card__links { display: grid; gap: 10px; margin-top: auto; padding-top: 16px; }
 .about-card__links .link { justify-self: start; font-size: 15px; }
+.about-card--short { min-height: 240px; }
 .about-product { display: grid; gap: 16px; padding: clamp(32px, 4.5vw, 64px); border-radius: var(--radius); background: var(--surface); }
 .about-product__title { font-size: clamp(28px, 3vw, 44px); font-weight: 500; line-height: 1.08; letter-spacing: -0.035em; }
 .about-product__text { max-width: 44em; font-size: 17px; line-height: 1.6; color: var(--muted); }

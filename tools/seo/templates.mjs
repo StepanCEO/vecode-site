@@ -688,6 +688,22 @@ export function aboutPage({ a, services, headHtml, updated }) {
       </div>
     </div>
   </section>
+${a.engineering ? `
+  <section class="panel" id="engineering">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title" data-reveal>Инженерная <em>база</em>.</h2>
+        <p class="section__note" data-reveal>${typo(a.engineering.note)}</p>
+      </div>
+      <div class="about-grid">
+        ${a.engineering.items.map(([t, d], i) => `<article class="about-card about-card--short" data-reveal>
+          <span class="about-card__num">${String(i + 1).padStart(2, '0')}</span>
+          <h3 class="about-card__title">${typo(t)}</h3>
+          <p class="about-card__text">${typo(d)}</p>
+        </article>`).join('\n        ')}
+      </div>
+    </div>
+  </section>` : ''}
 ${requisites.length ? `
   <section class="section" id="requisites">
     <div class="container about-intro">
