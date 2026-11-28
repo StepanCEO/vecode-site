@@ -7,13 +7,13 @@ import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SITE, FACTS, abs } from './seo/config.mjs';
-import { SERVICES, HOME, HOME_FAQ, HUB, TENDER, ABOUT, CASES, CASES_HUB, CLIENTS } from './seo/content.mjs';
+import { SERVICES, HOME, HOME_FAQ, HUB, TENDER, ABOUT, CASES, CASES_HUB, CLIENTS, PRODUCT } from './seo/content.mjs';
 import {
   ID, graph, buildOrganization, buildWebSite, buildWebPage, buildPrimaryImage, buildBreadcrumbs,
   buildService, buildFaqPage, buildItemList,
 } from './seo/jsonld.mjs';
 import {
-  head, header, footer, homeServices, faqItems, formChips, servicePage, hubPage, notFoundPage, servicePath, legalPage, tenderPage, aboutPage, casesHubPage, casePage, homeCases, casePath, clientsTicker, BASE,
+  head, header, footer, homeServices, faqItems, formChips, servicePage, hubPage, notFoundPage, servicePath, legalPage, tenderPage, aboutPage, casesHubPage, casePage, homeCases, casePath, clientsTicker, homeProduct, productPage, BASE,
 } from './seo/templates.mjs';
 import { LEGAL_PAGES, missingLegal } from './seo/legal.mjs';
 
@@ -131,6 +131,24 @@ for (const [i, c] of CASES.entries()) {
   pages.push({ path, file: `proekty/${c.slug}/index.html`, title: c.title, description: c.description, updated: SITE.updated, priority: '0.7' });
 }
 
+/* ---------- собственный продукт ---------- */
+{
+  const path = PRODUCT.path;
+  const jsonld = graph([
+    buildOrganization({ services: SERVICES }),
+    buildWebSite(),
+    buildWebPage({ path, title: PRODUCT.title, description: PRODUCT.description }),
+    buildPrimaryImage(path),
+    buildBreadcrumbs(path, [
+      { name: 'Главная', path: '/' },
+      { name: PRODUCT.name, path },
+    ]),
+  ]);
+  const headHtml = head({ title: PRODUCT.title, description: PRODUCT.description, path, rel: '../', jsonld });
+  await write('firstcrm/index.html', productPage({ p: PRODUCT, cases: CASES, services: SERVICES, headHtml, updated: SITE.updated }));
+  pages.push({ path, file: 'firstcrm/index.html', title: PRODUCT.title, description: PRODUCT.description, updated: SITE.updated, priority: '0.8' });
+}
+
 /* ---------- о студии ---------- */
 {
   const path = ABOUT.path;
@@ -214,6 +232,7 @@ for (const doc of LEGAL_PAGES) {
     services: homeServices(SERVICES),
     ticker: clientsTicker(CLIENTS),
     work: homeCases(CASES),
+    product: homeProduct(PRODUCT),
     faq: faqItems(HOME_FAQ, 'faq'),
     chips: formChips(SERVICES),
     footer: footer('', SERVICES, { home: true }),
@@ -296,6 +315,7 @@ ${SERVICES.map(svcLine).join('\n')}
 - [Главная](${abs('/')}): о студии, принципы, процесс работы, частые вопросы
 - [О студии](${abs('/o-studii/')}): кто мы, чем занимаемся, принципы работы
 - [Все услуги](${abs('/uslugi/')}): обзор восьми направлений
+- [FirstCRM](${abs('/firstcrm/')}): собственный продукт студии — CRM для B2B-продаж, готовится к запуску
 - [Проекты](${abs('/proekty/')}): кейсы с задачами, решениями и цифрами
 ${CASES.map((c) => `- [${c.name}](${abs(casePath(c))}): ${c.lead}`).join('\n')}
 - [Частые вопросы](${abs('/#faq')}): стоимость, сроки, права на код, поддержка

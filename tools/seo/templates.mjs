@@ -185,6 +185,7 @@ export function footer(rel, services, { home = false, updated = SITE.updated } =
         <p class="footer__label">Проекты</p>
         <a href="${r}proekty/">Портфолио</a>
         <a href="${r}uslugi/">Услуги</a>
+        <a href="${r}firstcrm/">FirstCRM</a>
         <a href="${r}#contact">Заполнить бриф</a>
         <a href="${r}tender/">Пригласить в&nbsp;тендер</a>
       </nav>
@@ -669,7 +670,7 @@ export function aboutPage({ a, services, headHtml, updated }) {
       <p class="tile__tag">собственный продукт</p>
       <h2 class="about-product__title">${typo(a.product.title)}</h2>
       <p class="about-product__text">${typo(a.product.text)}</p>
-      <a class="link" href="${rel}uslugi/${a.product.link}/">${typo(bySlug[a.product.link].name)} на заказ <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a class="link" href="${rel}firstcrm/">Подробнее о FirstCRM <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
   </section>
 
@@ -903,4 +904,115 @@ export function clientsTicker(clients) {
       </div>
     </div>
   </div>`;
+}
+
+/* ---------------- собственный продукт ---------------- */
+
+/** Блок продукта на главной (между маркерами build:product) */
+export function homeProduct(p) {
+  return `    <div class="container product-teaser" data-reveal>
+      <div class="product-teaser__info">
+        <p class="tile__tag">собственный продукт</p>
+        <h2 class="product-teaser__title">${esc(p.name)}</h2>
+        <p class="product-teaser__text">${typo(p.lead)}</p>
+        <p class="product-teaser__status">${typo(p.status)}</p>
+        <div class="product-teaser__actions">
+          <a class="btn btn--accent" href="firstcrm/">О продукте <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn--line" href="#contact">Запросить доступ</a>
+        </div>
+      </div>
+      <a class="product-teaser__visual" href="firstcrm/" aria-label="${esc(p.name)}: подробнее о продукте">${caseCover(p, '', {})}</a>
+    </div>`;
+}
+
+export function productPage({ p, cases, services, headHtml, updated }) {
+  const rel = '../';
+  const bySlug = Object.fromEntries(cases.map((c) => [c.slug, c]));
+  const body = `
+  <section class="hero hero--page case-hero">
+    <div class="container">
+      ${crumbs([{ name: 'Главная', href: rel }, { name: p.name }])}
+      <p class="case-hero__meta">Собственный продукт / ${esc(SITE.name)}</p>
+      <h1 class="page-title">${typo(p.h1)}</h1>
+      <p class="page-lead">${typo(p.lead)}</p>
+      <ul class="case-tags" aria-label="Коротко о продукте">
+        ${p.stack.map((t) => `<li>${esc(t)}</li>`).join('')}
+      </ul>
+      <p class="product-status">${typo(p.status)}</p>
+      <div class="case-hero__actions">
+        <a class="btn btn--accent" href="${rel}#contact">Запросить ранний доступ <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn--line" href="${rel}uslugi/razrabotka-crm/">CRM под ваши процессы</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight case-cover-wrap">
+    <div class="container">
+      ${caseCover(p, rel, { large: true, eager: true })}
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="stats">
+        ${p.stats.map(([n, t]) => `<div class="stat" data-reveal>
+          <p class="stat__num">${esc(n)}</p>
+          <p class="stat__label">${typo(t)}</p>
+        </div>`).join('\n        ')}
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="features">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title" data-reveal>Что <em>умеет</em>.</h2>
+        <p class="section__note" data-reveal>${typo('Всё, что нужно отделу продаж, без десятка отдельных сервисов.')}</p>
+      </div>
+      <div class="about-grid">
+        ${p.features.map(([name, text], i) => `<article class="about-card" data-reveal>
+          <span class="about-card__num">${String(i + 1).padStart(2, '0')}</span>
+          <h3 class="about-card__title">${typo(name)}</h3>
+          <p class="about-card__text">${typo(text)}</p>
+        </article>`).join('\n        ')}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title" data-reveal>Шаблоны <em>отраслей</em>.</h2>
+        <p class="section__note" data-reveal>${typo('Этапы воронки и справочники под отрасль — из проектов, которые мы делали для клиентов. Компания выбирает шаблон при первом входе.')}</p>
+      </div>
+      <div class="bento bento--flush">
+        ${p.industries.map(([name, text, slug], i) => `<article class="tile${i === 0 ? ' tile--accent' : ''}" data-reveal>
+          <p class="tile__tag">шаблон</p>
+          <h3 class="tile__title">${typo(name)}</h3>
+          <p class="tile__text">${typo(text)}</p>
+          ${slug && bySlug[slug] ? `<p class="tile__link"><a class="link" href="${rel}proekty/${slug}/">Кейс: ${typo(bySlug[slug].name)}</a></p>` : ''}
+        </article>`).join('\n        ')}
+      </div>
+    </div>
+  </section>
+
+  <section class="panel case-gallery" aria-label="Экраны продукта">
+    <div class="container">
+      ${p.shots.slice(2).map((s) => `<figure class="case-shot case-shot--browser" data-reveal>
+        <div class="cc-frame cc-frame--static">${browserBar}${caseImg(p, s, rel, { sizes: '(max-width: 1200px) 94vw, 1100px' })}</div>
+        <figcaption>${typo(s.caption)}</figcaption>
+      </figure>`).join('\n      ')}
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container case-block">
+      <h2 class="case-block__title" data-reveal>Данные и доверие</h2>
+      <ul class="checklist" data-reveal>
+        ${p.trust.map((d) => `<li>${typo(d)}</li>`).join('\n        ')}
+      </ul>
+    </div>
+  </section>
+${cta(rel)}`;
+  return page({ headHtml, rel, services, body, updated });
 }
